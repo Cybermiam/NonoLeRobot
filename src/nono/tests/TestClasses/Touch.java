@@ -1,3 +1,5 @@
+package nono.tests.TestClasses;
+
 import lejos.hardware.port.SensorPort;
 import lejos.utility.Delay;
 

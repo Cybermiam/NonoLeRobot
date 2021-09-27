@@ -1,3 +1,5 @@
+package nono.tests.TestClasses;
+
 import lejos.hardware.Button;
 import lejos.utility.Delay;
 
