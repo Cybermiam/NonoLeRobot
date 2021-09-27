@@ -1,4 +1,6 @@
 package nono.tests;
+
+import nono.tests.TestClasses.TouchSensor;
 import lejos.hardware.BrickFinder;
 import lejos.hardware.Button;
 import lejos.hardware.ev3.LocalEV3;
@@ -14,7 +16,6 @@ import lejos.robotics.Color;
 import lejos.robotics.SampleProvider;
 import lejos.robotics.filter.MeanFilter;
 import lejos.utility.Delay;
-//import 
 
 public class main {
 
@@ -64,8 +65,6 @@ public class main {
 		// PINCE
 		//Motor.B.setSpeed(1000);
 		//Motor.B.rotateTo(-500);
-
-<<<<<<< HEAD:src/main.java
 		
 		TouchSensor sensor=new TouchSensor(LocalEV3.get().getPort("S2"));
 		DifferentialDrive Driver = new DifferentialDrive(LocalEV3.get().getPort("A"),LocalEV3.get().getPort("C"));
@@ -74,15 +73,7 @@ public class main {
 			Delay.msDelay(50);
 		}
 		Driver.stop();
-=======
-
-		//DifferentialDrive Driver = new DifferentialDrive(LocalEV3.get().getPort(portName), right_port)
 
 
-	
-
-
-
->>>>>>> 3aa071a5ed545cd9988f62e1ff199f22b1fa6f63:src/nono/tests/first.java
 	}
 }

@@ -1,3 +1,5 @@
+package nono.tests.TestClasses;
+
 import lejos.hardware.port.Port;
 import lejos.hardware.sensor.EV3TouchSensor;
 
