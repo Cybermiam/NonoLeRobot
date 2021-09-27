@@ -1,3 +1,4 @@
+package nono.tests;
 import lejos.hardware.BrickFinder;
 import lejos.hardware.Button;
 import lejos.hardware.ev3.LocalEV3;
