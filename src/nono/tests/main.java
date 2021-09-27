@@ -1,4 +1,5 @@
 package nono.tests;
+import TouchSensor;
 import lejos.hardware.BrickFinder;
 import lejos.hardware.Button;
 import lejos.hardware.ev3.LocalEV3;
