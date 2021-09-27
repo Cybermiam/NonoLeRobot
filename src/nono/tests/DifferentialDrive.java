@@ -1,3 +1,4 @@
+package nono.tests;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.port.Port;
 

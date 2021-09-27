@@ -1,3 +1,4 @@
+package nono.tests;
 import lejos.hardware.BrickFinder;
 import lejos.hardware.Button;
 import lejos.hardware.ev3.LocalEV3;
@@ -62,25 +63,15 @@ public class first {
 
 		// PINCE
 		//Motor.B.setSpeed(1000);
-		//Motor.B.rotateTo(2000);
+		//Motor.B.rotateTo(-500);
 
-		TouchSensor sensor=new TouchSensor(LocalEV3.get().getPort("S2"));
-		DifferentialDrive Driver = new DifferentialDrive(LocalEV3.get().getPort("A"),LocalEV3.get().getPort("C"));
 
-		//	Driver.rotateClockwise();
-		//	Delay.msDelay(1000);
-		//	Driver.stop();
-		//	
-		//	Delay.msDelay(2000);
-		//  Driver.stop();
-		Driver.forward();
-		while (! sensor.isPressed()){
-			Delay.msDelay(100);
-		}
-		Driver.stop(); 
-		
-		
-		
-		
+		//DifferentialDrive Driver = new DifferentialDrive(LocalEV3.get().getPort(portName), right_port)
+
+
+	
+
+
+
 	}
 }
