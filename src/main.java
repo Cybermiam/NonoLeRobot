@@ -13,12 +13,12 @@ import lejos.robotics.Color;
 import lejos.robotics.SampleProvider;
 import lejos.robotics.filter.MeanFilter;
 import lejos.utility.Delay;
-//import DifferentialDrive
+//import 
 
-public class first {
+public class main {
 
 	public static void main(String[] args) {
-		GraphicsLCD brick = BrickFinder.getDefault().getGraphicsLCD();
+		//GraphicsLCD brick = BrickFinder.getDefault().getGraphicsLCD();
 		//brick.drawString("Le premier programme fonctionne, on est connécté.", 0, 0, GraphicsLCD.VCENTER | GraphicsLCD.LEFT);
 		//Delay.msDelay(5000);
 		//Port port = LocalEV3.get().getPort("S4");
@@ -64,13 +64,13 @@ public class first {
 		//Motor.B.setSpeed(1000);
 		//Motor.B.rotateTo(-500);
 
-
-		//DifferentialDrive Driver = new DifferentialDrive(LocalEV3.get().getPort(portName), right_port)
-
-
-
-
-
-
+		
+		TouchSensor sensor=new TouchSensor(LocalEV3.get().getPort("S2"));
+		DifferentialDrive Driver = new DifferentialDrive(LocalEV3.get().getPort("A"),LocalEV3.get().getPort("C"));
+		Driver.forward();
+		while (! sensor.isPressed()){
+			Delay.msDelay(50);
+		}
+		Driver.stop();
 	}
 }
