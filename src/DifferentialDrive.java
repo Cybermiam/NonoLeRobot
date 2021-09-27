@@ -5,7 +5,7 @@ public class DifferentialDrive{
     private EV3LargeRegulatedMotor mLeftMotor;
     private EV3LargeRegulatedMotor mRightMotor;
 
-    private final static int SPEED = 50;
+    private final static int SPEED = 1000;
 
     public DifferentialDrive(Port left_port, Port right_port){
         mLeftMotor = new EV3LargeRegulatedMotor(left_port);

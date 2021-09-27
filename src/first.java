@@ -62,15 +62,25 @@ public class first {
 
 		// PINCE
 		//Motor.B.setSpeed(1000);
-		//Motor.B.rotateTo(-500);
+		//Motor.B.rotateTo(2000);
 
+		TouchSensor sensor=new TouchSensor(LocalEV3.get().getPort("S2"));
+		DifferentialDrive Driver = new DifferentialDrive(LocalEV3.get().getPort("A"),LocalEV3.get().getPort("C"));
 
-		//DifferentialDrive Driver = new DifferentialDrive(LocalEV3.get().getPort(portName), right_port)
-
-
-
-
-
-
+		//	Driver.rotateClockwise();
+		//	Delay.msDelay(1000);
+		//	Driver.stop();
+		//	
+		//	Delay.msDelay(2000);
+		//  Driver.stop();
+		Driver.forward();
+		while (! sensor.isPressed()){
+			Delay.msDelay(100);
+		}
+		Driver.stop(); 
+		
+		
+		
+		
 	}
 }
