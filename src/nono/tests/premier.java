@@ -1,5 +1,6 @@
 package nono.tests;
-import TouchSensor;
+
+import nono.tests.TestClasses.TouchSensor;
 import lejos.hardware.BrickFinder;
 import lejos.hardware.Button;
 import lejos.hardware.ev3.LocalEV3;
@@ -15,9 +16,8 @@ import lejos.robotics.Color;
 import lejos.robotics.SampleProvider;
 import lejos.robotics.filter.MeanFilter;
 import lejos.utility.Delay;
-//import 
 
-public class main {
+public class premier {
 
 	public static void main(String[] args) {
 		//GraphicsLCD brick = BrickFinder.getDefault().getGraphicsLCD();
