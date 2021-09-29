@@ -1,3 +1,4 @@
+import nono.tests.TestClasses.TouchSensor;
 import lejos.hardware.BrickFinder;
 import lejos.hardware.Button;
 import lejos.hardware.ev3.LocalEV3;
@@ -14,7 +15,7 @@ import lejos.robotics.Color;
 import lejos.robotics.SampleProvider;
 import lejos.robotics.filter.MeanFilter;
 import lejos.utility.Delay;
-//import DifferentialDrive
+import nono.tests.DifferentialDrive;
 
 public class first {
 
