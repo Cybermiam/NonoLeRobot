@@ -18,7 +18,6 @@ public class TouchSensor extends EV3TouchSensor
     {
         float[] sample = new float[1];
         fetchSample(sample, 0);
-
         return sample[0] != 0;
     }
 }

@@ -6,7 +6,6 @@ import lejos.hardware.Button;
 import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.lcd.Font;
 import lejos.hardware.lcd.GraphicsLCD;
-import lejos.hardware.port.Port;
 import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.hardware.sensor.EV3TouchSensor;
 import lejos.hardware.sensor.EV3UltrasonicSensor;
@@ -26,7 +25,7 @@ public class Basic {
 	private int Speed;
 
 	public Basic() {
-		this("S4","S2","S1","A","C","B",500);
+		this("S4","S3","S2","A","C","B",500);
 	}
 	public Basic(String u,String c,String t,String mL,String mR,String cl,int s) {
 		Ultrasound =new EV3UltrasonicSensor(LocalEV3.get().getPort(u));
@@ -41,8 +40,8 @@ public class Basic {
 		Speed=s;
 	}
 	public void stop() {
-		 MotorL.stop();
-	     MotorR.stop();
+		MotorL.stop();
+		MotorR.stop();
 	}
 	public void goForward() {
 		MotorL.forward();
@@ -51,30 +50,30 @@ public class Basic {
 	public void goForwardDuring(int d) {
 		for(int i=0;i<d;i++) {
 			goForward();
+			Delay.msDelay(600);
 		}
 	}
 	public void goForwardUltrasoundTouch() {
+		if(ultrasound()<0||ultrasound()>20) {
+			throw new IllegalArgumentException();
+		}
 		while (!pressedTouch()){
-			if(Ultrasound()<0||Ultrasound()>20) {
-				throw new IllegalArgumentException();
-			}
-			Delay.msDelay(50);
 			goForwardDuring(1);
 		}
 		stop();
 
 	}
-	public float Ultrasound() {
+	public float ultrasound() {
 		SampleProvider distance = Ultrasound.getMode("Distance");
 		SampleProvider average = new MeanFilter(distance, 5);
 		float[] sample = new float[average.sampleSize()];
-		return Float.parseFloat(sample.toString());
+		return sample[0];
 	}
 	public boolean pressedTouch(){
-		 float[] sample = new float[1];
-		 Touch.fetchSample(sample,0);
-	     return sample[0] != 0;
-		
+		float[] sample = new float[1];
+		Touch.fetchSample(sample,0);
+		return sample[0] != 0;
+
 	}
 
 }
