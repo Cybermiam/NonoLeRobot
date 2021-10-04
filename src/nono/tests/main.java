@@ -20,24 +20,24 @@ import lejos.utility.Delay;
 public class main {
 
 	public static void main(String[] args) {
-		//GraphicsLCD brick = BrickFinder.getDefault().getGraphicsLCD();
+		GraphicsLCD brick = BrickFinder.getDefault().getGraphicsLCD();
 		//brick.drawString("Le premier programme fonctionne, on est connécté.", 0, 0, GraphicsLCD.VCENTER | GraphicsLCD.LEFT);
 		//Delay.msDelay(5000);
-		//Port port = LocalEV3.get().getPort("S4");
-		//EV3 Ultrason = new EV3UltrasonicSensor(port);
-		//SampleProvider distance = Ultrason.getMode("Distance");
-		//SampleProvider average = new MeanFilter(distance, 5);
-		//float[] sample = new float[average.sampleSize()];
+		Port port = LocalEV3.get().getPort("S4");
+		EV3UltrasonicSensor s = new EV3UltrasonicSensor(port);
+		SampleProvider distance = s.getMode("Distance");
+		SampleProvider average = new MeanFilter(distance, 5);
+		float[] sample = new float[average.sampleSize()];
 
-		//int i = 0;
-		//while(i<20){
-		//	average.fetchSample(sample, 0);
-		//	String s = Float.toString(sample[0]);
-		//	brick.drawString(s,0,0,GraphicsLCD.VCENTER | GraphicsLCD.LEFT);
-		//	i++;
-		//	Delay.msDelay(1000);
-		//	brick.clear();
-		//}
+		int i = 0;
+		while(i<20){
+			average.fetchSample(sample, 0);
+			String s1 = Float.toString(sample[0]);
+			brick.drawString(s1,0,0,GraphicsLCD.VCENTER | GraphicsLCD.LEFT);
+			i++;
+			Delay.msDelay(1000);
+			brick.clear();
+		}
 
 		//ultrason S4
 		//touché S2
@@ -66,14 +66,14 @@ public class main {
 		//Motor.B.setSpeed(1000);
 		//Motor.B.rotateTo(-500);
 		
-		TouchSensor sensor=new TouchSensor(LocalEV3.get().getPort("S2"));
+		/*TouchSensor sensor=new TouchSensor(LocalEV3.get().getPort("S2"));
 		DifferentialDrive Driver = new DifferentialDrive(LocalEV3.get().getPort("A"),LocalEV3.get().getPort("C"));
 		Driver.forward();
 		while (! sensor.isPressed()){
 			Delay.msDelay(50);
 		}
-		Driver.stop();
-
-
+		Driver.stop();*/
+	//	Basic b=new Basic();
+	//	b.goForwardUltrasoundTouch();
 	}
 }
