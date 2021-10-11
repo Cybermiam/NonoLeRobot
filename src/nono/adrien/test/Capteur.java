@@ -46,20 +46,28 @@ public class Capteur {
 			return sample[0] != 0;
 		}
 	}
-	private class Ultrason extends EV3UltrasonicSensor{
+	
+	private class Ultrason{
+
+		private EV3UltrasonicSensor s;
+		private	SampleProvider distance ;//= Ultrasound.getMode("Distance");
+		private	SampleProvider average;// = new MeanFilter(distance, 5);
+		private	float[] sample ;//= new float[average.sampleSize()];
+		
 		private Ultrason() {
-			this(LocalEV3.get().getPort("S4"));
+			s = new EV3UltrasonicSensor((LocalEV3.get().getPort("S4")));
+			 distance = s.getMode("Distance");
+			 average = new MeanFilter(distance, 5);
+			 sample = new float[average.sampleSize()];
+			
 		}
-		private Ultrason(Port p) {
-			super(p);
-		}
+	
 		private float tableauDistance() {
-			SampleProvider distance = Ultrasound.getMode("Distance");
-			SampleProvider average = new MeanFilter(distance, 5);
-			float[] sample = new float[average.sampleSize()];
-			return sample[0];
+			average.fetchSample(sample, 0);
+			return(sample[0]);
 		}
 	}
+	
 	private class Couleur extends EV3ColorSensor{
 		private Couleur() {
 			this(LocalEV3.get().getPort("S3"));
