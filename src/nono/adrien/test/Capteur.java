@@ -14,67 +14,62 @@ import lejos.hardware.lcd.Font;
 import lejos.hardware.lcd.GraphicsLCD;
 
 public class Capteur {
-	private Ultrason Ultrasound;
-	private Couleur Color;
-	private Toucher Touch;
+	private EV3UltrasonicSensor ultrasound;
+	private EV3ColorSensor color;
+	private EV3TouchSensor touch;
+
+
+	private	SampleProvider distance ;//= Ultrasound.getMode("Distance");
+	private	SampleProvider average;// = new MeanFilter(distance, 5);
+	private	float[] sample ;//= new float[average.sampleSize()];
+
 	
 	public Capteur(){
-		Touch=new Toucher();
-		Color=new Couleur();
-		Ultrasound=new Ultrason();
+		touch=new EV3TouchSensor(LocalEV3.get().getPort("S2"));
+		color=new EV3ColorSensor(LocalEV3.get().getPort("S3"));
+		ultrasound=new EV3UltrasonicSensor(LocalEV3.get().getPort("S4"));
+		distance = ultrasound.getMode("Distance");
+		average = new MeanFilter(distance,5);
 	}
 	public boolean estToucher() {
-		return Touch.isPressed();
-	}
-	public float afficherTableauDistance() {
-		return Ultrasound.tableauDistance();
-	}
-	
-	
-	
-	
-	private class Toucher extends EV3TouchSensor{
-		private Toucher() {
-			this(LocalEV3.get().getPort("S2"));
-		}
-		private Toucher(Port p) {
-			super(p);
-		}
-		private boolean isPressed() {
-			float[] sample = new float[1];
-			fetchSample(sample, 0);
-			return sample[0] != 0;
-		}
-	}
-	
-	private class Ultrason{
+		float[] sample = new float[1];
+		touch.fetchSample(sample, 0);
+		return sample[0] != 0;
 
-		private EV3UltrasonicSensor s;
-		private	SampleProvider distance ;//= Ultrasound.getMode("Distance");
-		private	SampleProvider average;// = new MeanFilter(distance, 5);
-		private	float[] sample ;//= new float[average.sampleSize()];
-		
-		private Ultrason() {
-			s = new EV3UltrasonicSensor((LocalEV3.get().getPort("S4")));
-			 distance = s.getMode("Distance");
-			 average = new MeanFilter(distance, 5);
-			 sample = new float[average.sampleSize()];
-			
-		}
-	
-		private float tableauDistance() {
-			average.fetchSample(sample, 0);
-			return(sample[0]);
-		}
-	}
-	
-	private class Couleur extends EV3ColorSensor{
-		private Couleur() {
-			this(LocalEV3.get().getPort("S3"));
-		}
-		private Couleur(Port p) {
-			super(p);
-		}
 	}
 
+	public float distanceMetre() {
+		sample = new float[average.sampleSize()];
+		average.fetchSample(sample, 0);
+		return sample[sample.length-1];
+	}
+	
+
+	/*public float ObjetLePlusProche() {
+		distance = ultrasound.getMode("Distance");
+		average = new MeanFilter(distance, 5);
+		sample = new float[average.sampleSize()];
+		return sample[0];
+		}*/
+	
 }
+
+
+/*
+
+	private float tableauDistance() {
+		average.fetchSample(sample, 0);
+		return(sample[0]);
+	}
+}
+
+private class Couleur extends EV3ColorSensor{
+	private Couleur() {
+		this(LocalEV3.get().getPort("S3"));
+	}
+	private Couleur(Port p) {
+		super(p);
+	}
+}
+*/
+

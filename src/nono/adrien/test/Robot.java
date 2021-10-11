@@ -17,17 +17,18 @@ public class Robot {
 	//	c.afficherTableauDistance();
 	//}
 	public void avancerAvecToucher() {
-			while (! c.estToucher()){
-				float d=c.afficherTableauDistance();
-				if (d<0.10) {
+		while (! c.estToucher()){
+			float d=c.afficherTableauDistance();
+			while(d>0.10) {
 				//m.acceleration(1000);
+				m.setVitesse(500);
 				m.avancerPendant(1);
 			}
 		}
 		m.arreter();
 	}
 	public void setVitesse(int i) {
-		m.setVitesse(i);
+		m.smooth(i);
 	}
 }
 
