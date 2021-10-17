@@ -23,7 +23,9 @@ public class Capteur {
 	private	SampleProvider average;// = new MeanFilter(distance, 5);
 	private	float[] sample ;//= new float[average.sampleSize()];
 
-	
+	/**
+	 * Constructeur de la classe Capteur
+	 */
 	public Capteur(){
 		touch=new EV3TouchSensor(LocalEV3.get().getPort("S2"));
 		color=new EV3ColorSensor(LocalEV3.get().getPort("S3"));
@@ -31,13 +33,20 @@ public class Capteur {
 		distance = ultrasound.getMode("Distance");
 		average = new MeanFilter(distance,5);
 	}
+	/**
+	 * 
+	 * @return true si le robot est toucher,et false si le robot n est pas touche
+	 */
 	public boolean estToucher() {
 		float[] sample = new float[1];
 		touch.fetchSample(sample, 0);
 		return sample[0] != 0;
 
 	}
-
+	/**
+	 * 
+	 * @return un float avec la distance capté par l'ultrason (en mètre)
+	 */
 	public float distanceMetre() {
 		sample = new float[average.sampleSize()];
 		average.fetchSample(sample, 0);

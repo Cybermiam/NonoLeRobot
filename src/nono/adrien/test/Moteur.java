@@ -1,32 +1,32 @@
 package nono.adrien.test;
 
 import lejos.hardware.port.Port;
+import lejos.hardware.motor.BaseRegulatedMotor;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
+import lejos.hardware.motor.Motor;
 import lejos.hardware.BrickFinder;
 import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.lcd.Font;
 import lejos.hardware.lcd.GraphicsLCD;
 import lejos.utility.Delay;
+import lejos.robotics.RegulatedMotor;
 import lejos.robotics.navigation.MovePilot;
 
 public class Moteur {
 	private MovePilot pilot;//diametre roue 5/5 largeur 3,distance entre roue 16.5,centre 8;
-	private EV3LargeRegulatedMotor MotorL;
-	private EV3LargeRegulatedMotor MotorR;
-	private Port Claw;
-	private int Speed;
-	private int MAXSPEED = 600;
+	private EV3LargeRegulatedMotor motorL;
+	private EV3LargeRegulatedMotor motorR;
 	public int status = 0; // -1 recule ; 0 a l'arret ; 1  avance
-
+	/**Constructeur de la classe moteur
+	 * 
+	 */
 	public Moteur() {
-		MotorL = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("A"));
-		MotorR = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("C"));
-		pilot=new MovePilot(5.5,13,MotorL,MotorR);
-		pilot.setAngularSpeed(20);
-		Claw = LocalEV3.get().getPort("B");
-		Speed=10;
-		//MotorL.setSpeed(Speed);
-		//MotorR.setSpeed(Speed);
+		motorL = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("A"));
+		motorR = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("C"));
+		pilot=new MovePilot(5.5,13,motorL,motorR);
+		pilot.setAngularSpeed(100);
+		//motorL.setSpeed(Speed);
+		//motorR.setSpeed(Speed);
 	}
 	/*public void setVitesse(int s) {
 		MAXSPEED = s;
@@ -43,8 +43,8 @@ public class Moteur {
 			}
 
 
-			MotorL.setSpeed(Speed);
-			MotorR.setSpeed(Speed);
+			motorL.setSpeed(Speed);
+			motorR.setSpeed(Speed);
 
 
 	}
@@ -52,8 +52,8 @@ public class Moteur {
 		smooth(1);
 		if(status != 1) {
 			status = 1;
-		MotorL.forward();
-		MotorR.forward();
+		motorL.forward();
+		motorR.forward();
 		}
 		//Delay.msDelay(20);
 	}
@@ -62,8 +62,8 @@ public class Moteur {
 		smooth(1);
 		if(status != -1) {
 			status = -1;			
-			MotorL.backward();
-			MotorR.backward();
+			motorL.backward();
+			motorR.backward();
 		}
 
 	}
@@ -77,25 +77,25 @@ public class Moteur {
 			Delay.msDelay(10);
 			//brick.clear();
 		}
-		MotorL.stop();
-		MotorR.stop();
+		motorL.stop();
+		motorR.stop();
 			status = 0;
 	}
 	public void avancerPendant(int t) {
 		for(int i=0;i<t;i++) {
-			MotorL.forward();
-			MotorR.forward();
+			motorL.forward();
+			motorR.forward();
 			Delay.msDelay(100);
 		}
 	}
 	public void tourneG90() {
-		MotorL.forward();
-		MotorR.backward();
+		motorL.forward();
+		motorR.backward();
 		Delay.msDelay(20);
 	}
 	public void tourneD90() {
-		MotorR.forward();
-		MotorL.backward();
+		motorR.forward();
+		motorL.backward();
 		Delay.msDelay(20);
 	}
 	public int getSpeed() {
@@ -104,26 +104,52 @@ public class Moteur {
 }
 //class Pilot a voir,dans leJOS (methode asynchone et synchrone); 
 	 */
-	public void travel (int i) {
-		pilot.travel(i);		
+	/**Fonction permettant au robot d avancer sur une distance donne par l utilisateur
+	 * @param f est un float indiquant la distance du robot a parcourir en cm
+	 */
+	public void travel (float f) {
+		pilot.travel(f);		
 	}
+	/**Fonction modifiant la vitesse du robot en degree par seconde
+	 * @param i est une entier modifiant la vitesse de rotation des roues du robot en degre par seconde
+	 */
+	public void setSpeed (int i) {
+		pilot.setAngularSpeed(i);
+	}
+	/**Fonction permettant au robot d'avancer en arc,ou de tourner sur lui meme
+	 * @param radius est un double si positif le robot tourne vers la droite,si negatif vers la gauche et si neutre (= 0) tourne sur lui meme
+	 * @param angle est un double,si il es positif,le robot tourne dans le sens d'une horloge,si negatif tourne dans le sens contraire d'une horloge,et si neutre (= 0),un retour de la fonction immediat
+	 */
 	public void travelArc(double radius,double angle) {
 		pilot.arc(radius,angle);
 	}
+	/**Fonction permettant au robot de touner sur lui meme d'un angle defini
+	 * @param angle est un double,si positif tourne a gauche,si negatif a droite
+	 */
 	public void tourneCentre(double angle) {
 		pilot.rotate(angle);
 	}
-	
+	/**Fonction donnant la valeur de l angle tourne actuellement
+	 * @return un float qui correspond a l angle tourne 
+	 */
 	public float getAngleRotated() {
 		return pilot.getMovement().getAngleTurned();
 	}
-	
+	/**Fonction d'arret du robot (stop le robot)
+	 */
 	public void stop () {
 		pilot.stop();
 	}
-	
-	
-	
-	
-	
+	public void fermerPince() {
+		Motor.B.setSpeed(50);
+		Motor.B.backward();
+		Delay.msDelay(20);
+		Motor.B.stop();
+		//retourne une erreur (exception) pour l instant
+	}
+
+
+
+
+
 }

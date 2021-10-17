@@ -13,10 +13,27 @@ public class Robot {
 		m=m1;
 		c=c1;
 	}
+	public void avancerVers() {
+		if (c.distanceMetre()>0.09) {
+			m.travel(c.distanceMetre()*100);
+		}
+	}
+	public void reculer() {
+		m.travel(-100);
+	}
+	public void avancerVersToucher() {
+		avancerVers();
+		if(c.estToucher()) {
+			return;
+		}else {
+			reculer();
+			avancerVersToucher();
+		}
+	}
 	//public void afficherTableauDistance() {
 	//	c.afficherTableauDistance();
 	//}
-	public void avancerAvecToucher() {
+	/*public void avancerAvecToucher() {
 		while (! c.estToucher()){
 			float d=c.afficherTableauDistance();
 			while(d>0.10) {
@@ -29,6 +46,6 @@ public class Robot {
 	}
 	public void setVitesse(int i) {
 		m.smooth(i);
-	}
+	}*/
 }
 
