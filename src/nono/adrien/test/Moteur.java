@@ -15,8 +15,20 @@ import lejos.robotics.navigation.MovePilot;
 
 public class Moteur {
 	private MovePilot pilot;//diametre roue 5/5 largeur 3,distance entre roue 16.5,centre 8;
+	private Port ml=LocalEV3.get().getPort("A");
+	private Port mr=LocalEV3.get().getPort("C");
+	final private double diametreRoue= 5.5;
+	final private int chassis=13;
+	final private int vitesse=100;
 	private EV3LargeRegulatedMotor motorL;
 	private EV3LargeRegulatedMotor motorR;
+
+	//public Moteur() {
+	//	motorL = new EV3LargeRegulatedMotor(ml);
+	//	motorR = new EV3LargeRegulatedMotor(mr);
+	//	pilot=new MovePilot(diametreRoue,chassis,motorL,motorR);
+	//	pilot.setAngularSpeed(vitesse);
+
 	private EV3MediumRegulatedMotor motorP;
 	public int status = 0; // -1 recule ; 0 a l'arret ; 1  avance
 	 final int VitessePince=500;
@@ -111,38 +123,38 @@ public class Moteur {
 }
 //class Pilot a voir,dans leJOS (methode asynchone et synchrone); 
 	 */
-	/**Fonction permettant au robot d avancer sur une distance donne par l utilisateur
-	 * @param f est un float indiquant la distance du robot a parcourir en cm
+	/**Fonction permettant au robot d'avancer sur une distance donnée par l'utilisateur.
+	 * @param f est un float indiquant la distance du robot à parcourir en cm.
 	 */
 	public void travel (float f) {
 		pilot.travel(f);		
 	}
-	/**Fonction modifiant la vitesse du robot en degree par seconde
-	 * @param i est une entier modifiant la vitesse de rotation des roues du robot en degre par seconde
+	/**Fonction modifiant la vitesse du robot en degrée par seconde.
+	 * @param i est un entier modifiant la vitesse de rotation des roues du robot en degre par seconde.
 	 */
 	public void setSpeed (int i) {
 		pilot.setAngularSpeed(i);
 	}
-	/**Fonction permettant au robot d'avancer en arc,ou de tourner sur lui meme
-	 * @param radius est un double si positif le robot tourne vers la droite,si negatif vers la gauche et si neutre (= 0) tourne sur lui meme
-	 * @param angle est un double,si il es positif,le robot tourne dans le sens d'une horloge,si negatif tourne dans le sens contraire d'une horloge,et si neutre (= 0),un retour de la fonction immediat
+	/**Fonction permettant au robot d'avancer en arc,ou de tourner sur lui même.
+	 * @param radius est un double si positif le robot tourne vers la droite,si negatif vers la gauche et si neutre (= 0) tourne sur lui meme.
+	 * @param angle est un double,si il est positif,le robot tourne dans le sens d'une horloge,si negatif tourne dans le sens contraire d'une horloge,et si neutre (= 0),un retour de la fonction immediat.
 	 */
 	public void travelArc(double radius,double angle) {
 		pilot.arc(radius,angle);
 	}
-	/**Fonction permettant au robot de touner sur lui meme d'un angle defini
-	 * @param angle est un double,si positif tourne a gauche,si negatif a droite
+	/**Fonction permettant au robot de tourner sur lui même d'un angle defini.
+	 * @param angle est un double,si positif tourne à gauche,si negatif a droite.
 	 */
 	public void tourneCentre(double angle) {
 		pilot.rotate(angle);
 	}
-	/**Fonction donnant la valeur de l angle tourne actuellement
-	 * @return un float qui correspond a l angle tourne 
+	/**Fonction donnant la valeur de l'angle tourné actuellement.
+	 * @return un float qui correspond à l'angle tourné.
 	 */
 	public float getAngleRotated() {
 		return pilot.getMovement().getAngleTurned();
 	}
-	/**Fonction d'arret du robot (stop le robot)
+	/**Fonction d'arret du robot (stop le robot).
 	 */
 	public void stop () {
 		pilot.stop();

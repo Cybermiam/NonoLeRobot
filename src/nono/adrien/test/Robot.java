@@ -14,7 +14,7 @@ public class Robot {
 		c=c1;
 	}
 	/**
-	 * Fonction permettant au robot  avancer de la distance afficher par le capteur ultrason
+	 * Fonction permettant au robot d'avancer de la distance affichée par le capteur d'ultrason.
 	 */
 	public void avancerVers() {
 		if (c.distanceMetre()>0.09) {
@@ -22,13 +22,13 @@ public class Robot {
 		}
 	}
 	/**
-	 * Fonction reculant le robot de 100cm
+	 * Fonction reculant le robot de 100cm.
 	 */
 	public void reculer() {
 		m.travel(-100);
 	}
 	/**
-	 * Fonction avancant jusqu a ce que le capteur de toucher soit activer
+	 * Fonction avancant jusqu'a ce que le capteur de toucher soit activer.
 	 */
 	public void avancerVersToucher() {
 		avancerVers();
@@ -56,5 +56,17 @@ public class Robot {
 	public void setVitesse(int i) {
 		m.smooth(i);
 	}*/
+	public Moteur getM() {
+		return m;
+	}
+	public void setM(Moteur m) {
+		this.m = m;
+	}
+	public Capteur getC() {
+		return c;
+	}
+	public void setC(Capteur c) {
+		this.c = c;
+	}
 }
 
