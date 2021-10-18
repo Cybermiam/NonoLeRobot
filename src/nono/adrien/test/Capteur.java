@@ -39,7 +39,11 @@ public class Capteur {
 	 */
 	public boolean estToucher() {
 		float[] sample = new float[1];
-		touch.fetchSample(sample, 0);
+		touch.fetchSample(sample, 0);	
+//		GraphicsLCD brick = BrickFinder.getDefault().getGraphicsLCD();
+	//	brick.drawString(""+sample[0], 0, 0, GraphicsLCD.VCENTER | GraphicsLCD.LEFT);
+	//	Delay.msDelay(5);
+	//	brick.clear();
 		return sample[0] != 0;
 
 	}
