@@ -153,19 +153,23 @@ public class Moteur {
 		return ouvert;
 	}
 	public void fermerPince() {
+		if (ouvert=true) {
 		motorP.setSpeed(VitessePince);
 		motorP.backward();
 		Delay.msDelay(DureeFermeturePince);
 		motorP.stop();
 		ouvert=false;
+		}
 		
 	}
  public void ouvrirPince() {
+	 if (ouvert=false) {
 	 motorP.setSpeed(VitessePince);
 	 motorP.forward();
 	 Delay.msDelay(DureeFermeturePince);
 	 motorP.stop();
 	 ouvert=true;
+	 }
  }
 
 
