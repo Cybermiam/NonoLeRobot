@@ -3,6 +3,7 @@ package nono.adrien.test;
 import lejos.hardware.port.Port;
 import lejos.hardware.motor.BaseRegulatedMotor;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
+import lejos.hardware.motor.EV3MediumRegulatedMotor;
 import lejos.hardware.motor.Motor;
 import lejos.hardware.BrickFinder;
 import lejos.hardware.ev3.LocalEV3;
@@ -22,14 +23,27 @@ public class Moteur {
 	private EV3LargeRegulatedMotor motorL;
 	private EV3LargeRegulatedMotor motorR;
 
-	/**Constructeur de la classe moteur.
+	//public Moteur() {
+	//	motorL = new EV3LargeRegulatedMotor(ml);
+	//	motorR = new EV3LargeRegulatedMotor(mr);
+	//	pilot=new MovePilot(diametreRoue,chassis,motorL,motorR);
+	//	pilot.setAngularSpeed(vitesse);
+
+	private EV3MediumRegulatedMotor motorP;
+	public int status = 0; // -1 recule ; 0 a l'arret ; 1  avance
+	 final int VitessePince=500;
+	 final int DureeFermeturePince = 1000;
+	 private boolean ouvert= false;
+	/**Constructeur de la classe moteur
 	 * 
 	 */
 	public Moteur() {
-		motorL = new EV3LargeRegulatedMotor(ml);
-		motorR = new EV3LargeRegulatedMotor(mr);
-		pilot=new MovePilot(diametreRoue,chassis,motorL,motorR);
-		pilot.setAngularSpeed(vitesse);
+		motorP = new EV3MediumRegulatedMotor(LocalEV3.get().getPort("B"));
+		motorL = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("A"));
+		motorR = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("C"));
+		pilot=new MovePilot(5.5,13,motorL,motorR);
+		pilot.setAngularSpeed(100);
+		
 		//motorL.setSpeed(Speed);
 		//motorR.setSpeed(Speed);
 	}
@@ -145,14 +159,26 @@ public class Moteur {
 	public void stop () {
 		pilot.stop();
 	}
-	public void fermerPince() {
-		Motor.B.setSpeed(50);
-		Motor.B.backward();
-		Delay.msDelay(20);
-		Motor.B.stop();
-		//retourne une erreur (exception) pour l instant
+		
+	
+	public boolean estOuvert() {
+		return ouvert;
 	}
-
+	public void fermerPince() {
+		motorP.setSpeed(VitessePince);
+		motorP.backward();
+		Delay.msDelay(DureeFermeturePince);
+		motorP.stop();
+		ouvert=false;
+		
+	}
+ public void ouvrirPince() {
+	 motorP.setSpeed(VitessePince);
+	 motorP.forward();
+	 Delay.msDelay(DureeFermeturePince);
+	 motorP.stop();
+	 ouvert=true;
+ }
 
 
 
