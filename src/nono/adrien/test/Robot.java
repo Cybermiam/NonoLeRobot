@@ -1,6 +1,7 @@
 package nono.adrien.test;
 
 import lejos.hardware.port.Port;
+import lejos.utility.Delay;
 
 public class Robot {
 	private Moteur m;
@@ -18,27 +19,16 @@ public class Robot {
 	 */
 	public void avancerVers() {
 		if (c.distanceMetre()>0.09) {
-			m.travel(c.distanceMetre()*100);
+			m.travel(c.distanceMetre()*100,false);
 		}
 	}
 	/**
 	 * Fonction reculant le robot de 100cm.
 	 */
 	public void reculer() {
-		m.travel(-100);
+		m.travel(-100,false);
 	}
-	/**
-	 * Fonction avancant jusqu'a ce que le capteur de toucher soit activer.
-	 */
-	public void avancerVersToucher() {
-		avancerVers();
-		if(c.estToucher()) {
-			return;
-		}else {
-			reculer();
-			avancerVersToucher();
-		}
-	}
+	
 	//public void afficherTableauDistance() {
 	//	c.afficherTableauDistance();
 	//}
@@ -56,17 +46,24 @@ public class Robot {
 	public void setVitesse(int i) {
 		m.smooth(i);
 	}*/
-	public Moteur getM() {
+	public Moteur getMoteur() {
 		return m;
 	}
 	public void setM(Moteur m) {
 		this.m = m;
 	}
-	public Capteur getC() {
+	public Capteur getCapteur() {
 		return c;
 	}
-	public void setC(Capteur c) {
+	public void setCapteur(Capteur c) {
 		this.c = c;
+	}
+	public void search() {
+		m.tourneCentre(-90);
+		while(m.getAngleRotated()!=180){
+			m.tourneCentre(1);
+			Delay.msDelay(1000);
+		}
 	}
 }
 

@@ -12,59 +12,67 @@ import lejos.hardware.motor.BaseRegulatedMotor;
 public class Main {
 
 	public static void main(String[] args) {
-		 final Robot r=new Robot();
+		final Robot r=new Robot();
 		//r.setVitesse(500);
 		//r.avancerAvecToucher();
 		//final Moteur r.getM()=new Moteur();
 		//Capteur r.getC() = new Capteur();
 		//r.getM().travelArc(100, 90);
 		//r.getM().travel(50);
-		
-		
-		
-		GraphicsLCD brick = BrickFinder.getDefault().getGraphicsLCD();
-		
-	
 
-		
-		new Thread(new Runnable() {
-		    public void run() {
-		    	r.getM().setSpeed(30);
-		    	r.getM().tourneCentre(360);
-		    }
-		}).start();
-		
-		boolean atrouve = false;
+
+
+		GraphicsLCD brick = BrickFinder.getDefault().getGraphicsLCD();
+
+
+		//r.getM().setSpeed(30);
+		//r.getM().tourneCentre(360);
+
+	/*new Thread(new Runnable() {
+		public void run() {
+				r.getM().fermerPince();
+			}
+		}).start();*/
+
+
+		/*boolean atrouve = false;
+		float temp = 0;
 		
 		while(r.getM().getAngleRotated()<360 && atrouve==false) {
-			brick.drawString("distance"+r.getC().distanceMetre(), 0, 0, GraphicsLCD.VCENTER | GraphicsLCD.LEFT);
+			temp =  r.getC().distanceMetre();
+			brick.drawString("distance"+temp, 0, 0, GraphicsLCD.VCENTER | GraphicsLCD.LEFT);
 			Delay.msDelay(5);
-			if(r.getC().distanceMetre()<0.33) {
+			if(temp<1) {
 				r.getM().stop();
 				atrouve=true;
 			}
 			brick.clear();
 		}
+
+		r.getM().setSpeed(100);
+		r.getM().travel(temp*100-5,false);
 		
-	
-		new Thread(new Runnable() {
-		    public void run() {
-		    	r.getM().setSpeed(100);
-		    	r.getM().travel(r.getC().distanceMetre()*100);
-		    }
-		}).start();	
+		r.getM().ouvrirPince();
+		r.getM().travel(10,true);
 		
-		while(!r.getC().estToucher()) {
-			brick.drawString("distance"+r.getC().distanceMetre(), 0, 0, GraphicsLCD.VCENTER | GraphicsLCD.LEFT);
-			Delay.msDelay(10);
-			brick.clear();
+		brick.drawString("on vas a"+temp*100, 0, 0, GraphicsLCD.VCENTER | GraphicsLCD.LEFT);
+		
+		while(r.getC().estToucher()==false && r.getM().getDistanceParcourue()<=10) {
+			Delay.msDelay(1);
 		}
 		r.getM().stop();
+		r.getM().fermerPince();
+	
+
+	
 		
 		//r.getM().travel(50);
 		//r.getM().tourneCentre(45);
+
+      */
+		//r.getM().fermerPince();
+		//r.getM().ouvrirPince();
 		
-	
 	}
 }
 
