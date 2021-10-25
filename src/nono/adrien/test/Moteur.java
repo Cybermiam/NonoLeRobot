@@ -17,9 +17,9 @@ public class Moteur {
 	private MovePilot pilot;//diametre roue 5/5 largeur 3,distance entre roue 16.5,centre 8;
 	private Port ml=LocalEV3.get().getPort("A");
 	private Port mr=LocalEV3.get().getPort("C");
-	final private double diametreRoue= 5.5;
-	final private int chassis=13;
-	final private int vitesse=100;
+	private static double diametreRoue= 5.5;
+	private static int chassis=13;
+	private static int vitesse=100;
 	private EV3LargeRegulatedMotor motorL;
 	private EV3LargeRegulatedMotor motorR;
 
@@ -30,7 +30,9 @@ public class Moteur {
 	//	pilot.setAngularSpeed(vitesse);
 
 	private EV3MediumRegulatedMotor motorP;
+
 	public int status = 0; // -1 recule ; 0 a l'arret ; 1  avance
+
 	final int VitessePince=500;
 	final int DureeFermeturePince = 1000;
 	private boolean ouvert= false;
@@ -41,8 +43,12 @@ public class Moteur {
 		motorP = new EV3MediumRegulatedMotor(LocalEV3.get().getPort("B"));
 		motorL = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("A"));
 		motorR = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("C"));
+
 		pilot=new MovePilot(5.5,13,motorL,motorR);
 		pilot.setAngularSpeed(100);
+		//pilot=new MovePilot(diametreRoue,chassis,motorL,motorR);
+		//pilot.setAngularSpeed(vitesse);
+
 
 		//motorL.setSpeed(Speed);
 		//motorR.setSpeed(Speed);
@@ -126,8 +132,8 @@ public class Moteur {
 	/**Fonction permettant au robot d'avancer sur une distance donnée par l'utilisateur.
 	 * @param f est un float indiquant la distance du robot à parcourir en cm.
 	 */
-	public void travel (float f) {
-		pilot.travel(f);		
+	public void travel (float f, boolean b) {
+		pilot.travel(f,b);		
 	}
 	/**Fonction modifiant la vitesse du robot en degrée par seconde.
 	 * @param i est un entier modifiant la vitesse de rotation des roues du robot en degre par seconde.
@@ -140,13 +146,13 @@ public class Moteur {
 	 * @param angle est un double,si il est positif,le robot tourne dans le sens d'une horloge,si negatif tourne dans le sens contraire d'une horloge,et si neutre (= 0),un retour de la fonction immediat.
 	 */
 	public void travelArc(double radius,double angle) {
-		pilot.arc(radius,angle);
+		pilot.arc(radius,angle,true);
 	}
 	/**Fonction permettant au robot de tourner sur lui même d'un angle defini.
 	 * @param angle est un double,si positif tourne à gauche,si negatif a droite.
 	 */
 	public void tourneCentre(double angle) {
-		pilot.rotate(angle);
+		pilot.rotate(angle,true);
 	}
 	/**Fonction donnant la valeur de l'angle tourné actuellement.
 	 * @return un float qui correspond à l'angle tourné.
@@ -156,6 +162,10 @@ public class Moteur {
 	}
 	/**Fonction d'arret du robot (stop le robot).
 	 */
+
+	public float getDistanceParcourue() {
+		return pilot.getMovement().getDistanceTraveled();
+	}
 	public void stop () {
 		pilot.stop();
 	}
@@ -170,7 +180,7 @@ public class Moteur {
 	/** Methode qui ferme la pince du robot si elle est ouverte, si non indique que la pince est fermé
 	 */
 	public void fermerPince() {
-		if (ouvert==true) {
+		if(ouvert==true) {
 			motorP.setSpeed(VitessePince);
 			motorP.backward();
 			Delay.msDelay(DureeFermeturePince);
@@ -178,11 +188,13 @@ public class Moteur {
 			ouvert=false;
 		}
 
+
 		/** Methode qui ouvre la pince du robot si elle est fermé, si non indique que la pince est ouverte
 		 */
 	}
+
 	public void ouvrirPince() {
-		if (ouvert==false) {
+		if(ouvert==false) {
 			motorP.setSpeed(VitessePince);
 			motorP.forward();
 			Delay.msDelay(DureeFermeturePince);
@@ -190,8 +202,5 @@ public class Moteur {
 			ouvert=true;
 		}
 	}
-
-
-
 
 }
