@@ -31,9 +31,9 @@ public class Moteur {
 
 	private EV3MediumRegulatedMotor motorP;
 	public int status = 0; // -1 recule ; 0 a l'arret ; 1  avance
-	 final int VitessePince=500;
-	 final int DureeFermeturePince = 1000;
-	 private boolean ouvert= false;
+	final int VitessePince=500;
+	final int DureeFermeturePince = 1000;
+	private boolean ouvert= false;
 	/**Constructeur de la classe moteur
 	 * 
 	 */
@@ -43,7 +43,7 @@ public class Moteur {
 		motorR = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("C"));
 		pilot=new MovePilot(5.5,13,motorL,motorR);
 		pilot.setAngularSpeed(100);
-		
+
 		//motorL.setSpeed(Speed);
 		//motorR.setSpeed(Speed);
 	}
@@ -159,30 +159,37 @@ public class Moteur {
 	public void stop () {
 		pilot.stop();
 	}
-		
-	
+
+	/**Fonction retournant l'Etat de la pince
+	 * @return true si la pince est ouverte
+	 */
 	public boolean estOuvert() {
 		return ouvert;
 	}
+
+	/** Methode qui ferme la pince du robot si elle est ouverte, si non indique que la pince est fermé
+	 */
 	public void fermerPince() {
-		if (ouvert=true) {
-		motorP.setSpeed(VitessePince);
-		motorP.backward();
-		Delay.msDelay(DureeFermeturePince);
-		motorP.stop();
-		ouvert=false;
+		if (ouvert==true) {
+			motorP.setSpeed(VitessePince);
+			motorP.backward();
+			Delay.msDelay(DureeFermeturePince);
+			motorP.stop();
+			ouvert=false;
 		}
-		
+
+		/** Methode qui ouvre la pince du robot si elle est fermé, si non indique que la pince est ouverte
+		 */
 	}
- public void ouvrirPince() {
-	 if (ouvert=false) {
-	 motorP.setSpeed(VitessePince);
-	 motorP.forward();
-	 Delay.msDelay(DureeFermeturePince);
-	 motorP.stop();
-	 ouvert=true;
-	 }
- }
+	public void ouvrirPince() {
+		if (ouvert==false) {
+			motorP.setSpeed(VitessePince);
+			motorP.forward();
+			Delay.msDelay(DureeFermeturePince);
+			motorP.stop();
+			ouvert=true;
+		}
+	}
 
 
 
