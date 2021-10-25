@@ -1,4 +1,4 @@
-package nono.adrien.test;
+package nono;
 
 
 import lejos.hardware.BrickFinder;

@@ -1,4 +1,4 @@
-package nono.adrien.test;
+package nono;
 
 import lejos.hardware.port.Port;
 import lejos.hardware.sensor.EV3ColorSensor;
@@ -14,11 +14,11 @@ import lejos.hardware.lcd.Font;
 import lejos.hardware.lcd.GraphicsLCD;
 
 public class Capteur {
+	//======== Attributs =======//
+	
 	private EV3UltrasonicSensor ultrasound;
 	private EV3ColorSensor color;
 	private EV3TouchSensor touch;
-
-
 	private	SampleProvider distance ;//= Ultrasound.getMode("Distance");
 	private	SampleProvider average;// = new MeanFilter(distance, 5);
 	private	float[] sample ;//= new float[average.sampleSize()];
@@ -37,16 +37,17 @@ public class Capteur {
 	 * 
 	 * @return true si le robot est toucher,et false si le robot n est pas touche
 	 */
-	public boolean estToucher() {
+	public boolean estTouche() {
 		float[] sample = new float[1];
 		touch.fetchSample(sample, 0);	
-//		GraphicsLCD brick = BrickFinder.getDefault().getGraphicsLCD();
-	//	brick.drawString(""+sample[0], 0, 0, GraphicsLCD.VCENTER | GraphicsLCD.LEFT);
-	//	Delay.msDelay(5);
-	//	brick.clear();
+		//	GraphicsLCD brick = BrickFinder.getDefault().getGraphicsLCD();
+		//	brick.drawString(""+sample[0], 0, 0, GraphicsLCD.VCENTER | GraphicsLCD.LEFT);
+		//	Delay.msDelay(5);
+		//	brick.clear();
 		return sample[0] != 0;
 
 	}
+	
 	/**
 	 * 
 	 * @return un float avec la distance capté par l'ultrason (en mètre)
@@ -56,33 +57,10 @@ public class Capteur {
 		average.fetchSample(sample, 0);
 		return sample[sample.length-1];
 	}
-	
 
-	/*public float ObjetLePlusProche() {
-		distance = ultrasound.getMode("Distance");
-		average = new MeanFilter(distance, 5);
-		sample = new float[average.sampleSize()];
-		return sample[0];
-		}*/
-	
+
+
 }
 
 
-/*
-
-	private float tableauDistance() {
-		average.fetchSample(sample, 0);
-		return(sample[0]);
-	}
-}
-
-private class Couleur extends EV3ColorSensor{
-	private Couleur() {
-		this(LocalEV3.get().getPort("S3"));
-	}
-	private Couleur(Port p) {
-		super(p);
-	}
-}
-*/
 
