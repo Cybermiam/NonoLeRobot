@@ -11,6 +11,7 @@ public class Robot {
 	private Moteur moteurs;
 	private Capteur capteurs;
 
+	private double distancePalet;
 	//======== Constructeurs =======//
 
 	public Robot() {
@@ -20,6 +21,7 @@ public class Robot {
 	public Robot(Moteur moteurs,Capteur capteurs) {
 		this.moteurs=moteurs;
 		this.capteurs=capteurs;
+		distancePalet=0.3;
 	}
 
 
@@ -64,9 +66,7 @@ public class Robot {
 		
 		moteurs.stop();
 		moteurs.setSpeed(100);
-
 		moteurs.travel(temp1*100, false);
-		
 
 	}
 
