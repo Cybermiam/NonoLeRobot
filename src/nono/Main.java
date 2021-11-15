@@ -28,7 +28,7 @@ public class Main {
 		//r.getMoteur().setSpeed(30);
 		//r.getMoteur().tourneCentre(360);
 
-	/*new Thread(new Runnable() {
+		/*new Thread(new Runnable() {
 		public void run() {
 				r.getMoteur().fermerPince();
 			}
@@ -37,7 +37,7 @@ public class Main {
 
 		/*boolean atrouve = false;
 		float temp = 0;
-		
+
 		while(r.getMoteur().getAngleRotated()<360 && atrouve==false) {
 			temp =  r.getCapteur().distanceMetre();
 			brick.drawString("distance"+temp, 0, 0, GraphicsLCD.VCENTER | GraphicsLCD.LEFT);
@@ -51,29 +51,75 @@ public class Main {
 
 		r.getMoteur().setSpeed(100);
 		r.getMoteur().travel(temp*100-5,false);
-		
+
 		r.getMoteur().ouvrirPince();
 		r.getMoteur().travel(10,true);
-		
+
 		brick.drawString("on vas a"+temp*100, 0, 0, GraphicsLCD.VCENTER | GraphicsLCD.LEFT);
-		
+
 		while(r.getCapteur().estTouche()==false && r.getMoteur().getDistanceParcourue()<=10) {
 			Delay.msDelay(1);
 		}
 		r.getMoteur().stop();
 		r.getMoteur().fermerPince();
-	*/
+		 */
 
-	
-		
+
+
 		//r.getMoteur().travel(50);
 		//r.getMoteur().tourneCentre(45);
 
-      
+
 		//r.getMoteur().fermerPince();
 		//r.getMoteur().ouvrirPince();
 		//r.search();
-		r.premierPalets();
+	//	r.premierPalets();
+
+
+
+
+		r.setFecth(true);
+
+
+		new Thread(new Runnable() {
+			public void run() {
+				while(r.isFecth()) {
+					r.FecthDistance();
+				}
+			}
+		}).start();
+
+		r.search();
+
+
+		r.avancer((int)r.getVisuel().distance);
+		r.setEtat(r.getEtats().Arret);
+
+		r.recuperePalet();
+		r.setFecth(false);
+
+		
+
+		/*
+		brick.drawString("radius"+300 + "angle" + 10, 0, 0, GraphicsLCD.VCENTER | GraphicsLCD.LEFT);
+		r.getMoteur().travelArc(500, 90, false);
+		brick.clear();
+		
+		brick.drawString("radius"+50 + "angle" + 50, 0, 0, GraphicsLCD.VCENTER | GraphicsLCD.LEFT);
+		r.getMoteur().travelArc(50, 50, false);
+		brick.clear();
+
+		brick.drawString("radius"+200 + "angle" + 50, 0, 0, GraphicsLCD.VCENTER | GraphicsLCD.LEFT);
+		r.getMoteur().travelArc(200, 50, false);
+		brick.clear();
+
+
+		brick.drawString("radius"+200 + "angle" + 50, 0, 0, GraphicsLCD.VCENTER | GraphicsLCD.LEFT);
+		r.getMoteur().travelArc(200, 50, false);
+		brick.clear();
+*/
+
+
 	}
 }
 

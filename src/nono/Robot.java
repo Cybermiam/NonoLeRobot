@@ -4,6 +4,11 @@ import lejos.hardware.BrickFinder;
 import lejos.hardware.lcd.GraphicsLCD;
 import lejos.hardware.port.Port;
 import lejos.utility.Delay;
+import java.lang.Enum;
+import java.sql.Struct;
+
+
+//Enum Etat{Recherche,Attrape,Depose,Arret}
 
 public class Robot {
 	//======== Attributs =======//
@@ -13,10 +18,45 @@ public class Robot {
 
 	private double distancePalet;
 	private double distanceMax;
+	
+	
+	class Visuelc { 
+		public boolean atrouve = false;
+		public double distance=10000;}
+	
+	class Etatc { 
+			  public static final int Arret = 0;
+			  public static final int Recherche = 1;
+			  public static final int Attrape = 2;
+			  public static final int Depose = 3;
+			  public static final int DeplacementDivers = 4;
+			}
+	
+
+	private Visuelc visuel;
+	private Etatc etats;
+	private int etat;
+
+	
+	private boolean fecth = false;
+
+	private double lastMesure;
+
+	//Etat etat = etat.Arret;
+
 	//======== Constructeurs =======//
 
 	public Robot() {
 		this(new Moteur(),new Capteur());
+		visuel=new Visuelc();
+	}
+
+	public Visuelc getVisuel() {
+		return visuel;
+	}
+
+	public void setVisuel(Visuelc visuel) {
+		this.visuel = visuel;
 	}
 
 	public Robot(Moteur moteurs,Capteur capteurs) {
@@ -24,10 +64,18 @@ public class Robot {
 		this.capteurs=capteurs;
 		distancePalet=0.3;
 		distanceMax=2.9;
+		etats = new Etatc();
+		etat=etats.Arret;
 	}
 
 
 	//======== Methodes simples =======//
+
+	public void FecthDistance() {
+		lastMesure=capteurs.distanceMetre();
+		Delay.msDelay(5);
+	}
+
 
 	/**
 	 * @param distance int definissant le nombre de cm à parcourir
@@ -35,6 +83,7 @@ public class Robot {
 	 */
 	public void avancer(int distance) {
 		moteurs.travel(distance,false);
+		this.etat = etats.Arret;
 	}
 
 	/**
@@ -44,6 +93,8 @@ public class Robot {
 	public void reculer(int distance) {
 		moteurs.travel(-distance,false);
 	}
+
+
 
 
 	//======== Methodes haut niveau =======//
@@ -72,17 +123,19 @@ public class Robot {
 		moteurs.tourneCentre(360,true);
 		while(moteurs.getAngleRotated()<=360  && ( Math.abs(temp1-temp2) < 0.1)){
 			temp2=temp1;
-			temp1 =  capteurs.distanceMetre();
+			temp1 =  lastMesure;
 			if(temp1>=distanceMax) {
 				temp1=distanceMax;
 			}
 			brick.drawString(temp1+" vs "+temp2, 0, 0, GraphicsLCD.VCENTER | GraphicsLCD.LEFT);
-			Delay.msDelay(10);			
+			Delay.msDelay(2);			
 			brick.clear();
 		}
 		moteurs.stop();
 		moteurs.setSpeed(100);
-		moteurs.travel((float)temp1*100, false);
+		visuel.atrouve=true;
+		visuel.distance=temp1*100;
+
 	}
 
 	public boolean recuperePalet() {
@@ -94,9 +147,15 @@ public class Robot {
 		}
 		return false;
 	}
+
 	public void deposerPalet() {
 		moteurs.ouvrirPince();
 		reculer(20);
+	}
+
+	public void avanceVersPalet() {
+
+
 	}
 	/*public void avanceVersPalet() {
 		if(this.search()) {
@@ -107,10 +166,18 @@ public class Robot {
 
 
 	//======== Getter / Setter =======//
-
+ 
 
 	public Moteur getMoteur() {
 		return moteurs;
+	}
+
+	public Etatc getEtats() {
+		return etats;
+	}
+
+	public void setEtats(Etatc etats) {
+		this.etats = etats;
 	}
 
 	public void setMoteur(Moteur moteurs) {
@@ -124,6 +191,49 @@ public class Robot {
 	public void setCapteur(Capteur capteurs) {
 		this.capteurs = capteurs;
 	}
+
+	public double getDistancePalet() {
+		return distancePalet;
+	}
+
+	public void setDistancePalet(double distancePalet) {
+		this.distancePalet = distancePalet;
+	}
+
+	public double getDistanceMax() {
+		return distanceMax;
+	}
+
+	public void setDistanceMax(double distanceMax) {
+		this.distanceMax = distanceMax;
+	}
+
+	public int getEtat() {
+		return etat;
+	}
+
+	public void setEtat(int etat) {
+		this.etat = etat;
+	}
+
+	public boolean isFecth() {
+		return fecth;
+	}
+
+	public void setFecth(boolean startFecth) {
+		fecth = startFecth;
+	}
+
+	public double getLastMesure() {
+		return lastMesure;
+	}
+
+	public void setLastMesure(double lastMesure) {
+		this.lastMesure = lastMesure;
+	}
+
+
+
 
 }
 

@@ -66,8 +66,8 @@ public class Moteur {
 	 * @param radius est un double si positif le robot tourne vers la droite,si negatif vers la gauche et si neutre (= 0) tourne sur lui meme.
 	 * @param angle est un double,si il est positif,le robot tourne dans le sens d'une horloge,si negatif tourne dans le sens contraire d'une horloge,et si neutre (= 0),un retour de la fonction immediat.
 	 */
-	public void travelArc(double radius,double angle) {
-		pilot.arc(radius,angle,true);
+	public void travelArc(double radius,double angle, boolean b) {
+		pilot.arc(radius,angle,b);
 	}
 	
 	/**Fonction permettant au robot de tourner sur lui même d'un angle defini.
