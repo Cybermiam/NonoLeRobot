@@ -72,7 +72,8 @@ public class Main {
       
 		//r.getMoteur().fermerPince();
 		//r.getMoteur().ouvrirPince();
-		r.search();
+		//r.search();
+		r.premierPalets();
 	}
 }
 

@@ -18,7 +18,7 @@ public class Moteur {
 	
 	private static final double diametreRoue= 5.5;
 	private static final int largeurChassis=13; //distance inter-roue 
-	private static final int vitesse=100;
+	private static final int vitesse=500;
 	
 	private MovePilot pilot;//diametre roue 5/5 largeur 3,distance entre roue 16.5,centre 8;
 	private Port lefthandMotorort = LocalEV3.get().getPort("A");
@@ -73,8 +73,8 @@ public class Moteur {
 	/**Fonction permettant au robot de tourner sur lui même d'un angle defini.
 	 * @param angle est un double,si positif tourne à gauche,si negatif a droite.
 	 */
-	public void tourneCentre(double angle) {
-		pilot.rotate(angle,true);
+	public void tourneCentre(double angle,boolean b) {
+		pilot.rotate(angle,b);
 	}
 	
 	/**Fonction donnant la valeur de l'angle tourné actuellement.

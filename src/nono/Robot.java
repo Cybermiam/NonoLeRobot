@@ -7,7 +7,7 @@ import lejos.utility.Delay;
 
 public class Robot {
 	//======== Attributs =======//
-
+	//Enum Etat{Recherche,Attrape,Depose,Arret};
 	private Moteur moteurs;
 	private Capteur capteurs;
 
@@ -48,12 +48,28 @@ public class Robot {
 
 	//======== Methodes haut niveau =======//
 
+	/* Prendre le premier palet sur un cote ,ensuite se decale pour sur le cote afin de ne pas deranger les autres palets
+	 * Distance 57cm
+	 */
+	public void premierPalets() {
+		moteurs.travel(50,true);
+		boolean b=recuperePalet();
+		if(b) {
+		}else {
+			moteurs.fermerPince();
+		}
+		moteurs.tourneCentre(45,false);
+		moteurs.travel(30, true);
+		moteurs.tourneCentre(-45,false);
+		avancer(165);
+		deposerPalet();
+	}
 
 	public void search() {
 		GraphicsLCD brick = BrickFinder.getDefault().getGraphicsLCD();
 		double temp1 = distancePalet , temp2 = distancePalet;
 		moteurs.setSpeed(10);
-		moteurs.tourneCentre(360);
+		moteurs.tourneCentre(360,true);
 		while(moteurs.getAngleRotated()<=360  && ( Math.abs(temp1-temp2) < 0.1)){
 			temp2=temp1;
 			temp1 =  capteurs.distanceMetre();
@@ -68,19 +84,26 @@ public class Robot {
 		moteurs.setSpeed(100);
 		moteurs.travel((float)temp1*100, false);
 	}
-	
+
 	public boolean recuperePalet() {
-			moteurs.ouvrirPince();
-			moteurs.travel(15, false);
-			if(capteurs.estTouche()==true) {
+		moteurs.ouvrirPince();
+		moteurs.travel(20, false);
+		if(capteurs.estTouche()) {
 			moteurs.fermerPince();
 			return true;
 		}
 		return false;
 	}
-	public void avanceVersPalet() {
-		
+	public void deposerPalet() {
+		moteurs.ouvrirPince();
+		reculer(20);
 	}
+	/*public void avanceVersPalet() {
+		if(this.search()) {
+
+		}
+
+	}*/
 
 
 	//======== Getter / Setter =======//
