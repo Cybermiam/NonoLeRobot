@@ -12,6 +12,7 @@ public class Robot {
 	private Capteur capteurs;
 
 	private double distancePalet;
+	private double distanceMax;
 	//======== Constructeurs =======//
 
 	public Robot() {
@@ -22,6 +23,7 @@ public class Robot {
 		this.moteurs=moteurs;
 		this.capteurs=capteurs;
 		distancePalet=0.3;
+		distanceMax=2.9;
 	}
 
 
@@ -49,25 +51,35 @@ public class Robot {
 
 	public void search() {
 		GraphicsLCD brick = BrickFinder.getDefault().getGraphicsLCD();
-		float temp1 = (float) 2.9 , temp2 = (float) 2.9;
+		double temp1 = distancePalet , temp2 = distancePalet;
 		moteurs.setSpeed(10);
 		moteurs.tourneCentre(360);
 		while(moteurs.getAngleRotated()<=360  && ( Math.abs(temp1-temp2) < 0.1)){
-						
 			temp2=temp1;
 			temp1 =  capteurs.distanceMetre();
-			if(temp1>=2.9) {
-				temp1=(float) 2.9;
+			if(temp1>=distanceMax) {
+				temp1=distanceMax;
 			}
 			brick.drawString(temp1+" vs "+temp2, 0, 0, GraphicsLCD.VCENTER | GraphicsLCD.LEFT);
 			Delay.msDelay(10);			
 			brick.clear();
 		}
-		
 		moteurs.stop();
 		moteurs.setSpeed(100);
-		moteurs.travel(temp1*100, false);
-
+		moteurs.travel((float)temp1*100, false);
+	}
+	
+	public boolean recuperePalet() {
+			moteurs.ouvrirPince();
+			moteurs.travel(15, false);
+			if(capteurs.estTouche()==true) {
+			moteurs.fermerPince();
+			return true;
+		}
+		return false;
+	}
+	public void avanceVersPalet() {
+		
 	}
 
 
