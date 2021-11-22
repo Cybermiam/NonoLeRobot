@@ -1,9 +1,11 @@
 package nono;
 
 import lejos.hardware.BrickFinder;
+import lejos.hardware.Button;
 import lejos.hardware.lcd.GraphicsLCD;
 import lejos.hardware.port.Port;
 import lejos.utility.Delay;
+import java.awt.event.ActionEvent;
 import java.lang.Enum;
 import java.sql.Struct;
 
@@ -18,26 +20,28 @@ public class Robot {
 
 	private double distancePalet;
 	private double distanceMax;
-	
-	
+	private boolean pause;
+	public int angle;
+
+
 	class Visuelc { 
 		public boolean atrouve = false;
 		public double distance=10000;}
-	
+
 	class Etatc { 
-			  public static final int Arret = 0;
-			  public static final int Recherche = 1;
-			  public static final int Attrape = 2;
-			  public static final int Depose = 3;
-			  public static final int DeplacementDivers = 4;
-			}
-	
+		public static final int Arret = 0;
+		public static final int Recherche = 1;
+		public static final int Attrape = 2;
+		public static final int Depose = 3;
+		public static final int DeplacementDivers = 4;
+	}
+
 
 	private Visuelc visuel;
 	private Etatc etats;
 	private int etat;
 
-	
+
 	private boolean fecth = false;
 
 	private double lastMesure;
@@ -66,6 +70,8 @@ public class Robot {
 		distanceMax=2.9;
 		etats = new Etatc();
 		etat=etats.Arret;
+		pause=false;
+		angle=0;
 	}
 
 
@@ -103,25 +109,26 @@ public class Robot {
 	 * Distance 57cm
 	 */
 	public void premierPalets() {
-		moteurs.travel(50,true);
+		moteurs.travel(50,false);
+		int an=45;
 		boolean b=recuperePalet();
 		if(b) {
 		}else {
 			moteurs.fermerPince();
 		}
-		moteurs.tourneCentre(45,false);
-		moteurs.travel(30, true);
-		moteurs.tourneCentre(-45,false);
-		avancer(165);
+		moteurs.tourneCentre(an,false);
+		moteurs.travel(40, false);
+		moteurs.tourneCentre(-an,false);
+		avancerBut();
 		deposerPalet();
 	}
 
 	public void search() {
 		GraphicsLCD brick = BrickFinder.getDefault().getGraphicsLCD();
-		double temp1 = distancePalet , temp2 = distancePalet;
-		moteurs.setSpeed(10);
+		double temp1 = lastMesure , temp2 = lastMesure;
+		moteurs.setSpeed(20);
 		moteurs.tourneCentre(360,true);
-		while(moteurs.getAngleRotated()<=360  && ( Math.abs(temp1-temp2) < 0.1)){
+		while(moteurs.getAngleRotated()<=360  && ( Math.abs(temp1-temp2) > 0.2)){
 			temp2=temp1;
 			temp1 =  lastMesure;
 			if(temp1>=distanceMax) {
@@ -132,12 +139,11 @@ public class Robot {
 			brick.clear();
 		}
 		moteurs.stop();
+		moteurs.tourneCentre(20, false);
 		moteurs.setSpeed(100);
 		visuel.atrouve=true;
 		visuel.distance=temp1*100;
-
 	}
-
 	public boolean recuperePalet() {
 		moteurs.ouvrirPince();
 		moteurs.travel(20, false);
@@ -145,28 +151,38 @@ public class Robot {
 			moteurs.fermerPince();
 			return true;
 		}
+		moteurs.fermerPince();
 		return false;
 	}
 
 	public void deposerPalet() {
 		moteurs.ouvrirPince();
-		reculer(20);
+		reculer(20);		
 	}
 
-	public void avanceVersPalet() {
-
-
+	public void avancerBut() {
+		if(angle==0)
+			moteurs.travel(capteurs.distanceMetre()*100-20,false);
+		else {
+			moteurs.tourneCentre(-angle, false);
+			moteurs.travel(capteurs.distanceMetre()*100-20,false);
+		}
+	}
+	public void pause() {
+		Button.waitForAnyPress(1000);
+		if(Button.ENTER.isDown()) {
+			System.exit(0);
+		}
 	}
 	/*public void avanceVersPalet() {
 		if(this.search()) {
-
 		}
 
 	}*/
 
 
 	//======== Getter / Setter =======//
- 
+
 
 	public Moteur getMoteur() {
 		return moteurs;
@@ -231,9 +247,6 @@ public class Robot {
 	public void setLastMesure(double lastMesure) {
 		this.lastMesure = lastMesure;
 	}
-
-
-
 
 }
 

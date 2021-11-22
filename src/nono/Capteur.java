@@ -57,6 +57,17 @@ public class Capteur {
 		average.fetchSample(sample, 0);
 		return sample[sample.length-1];
 	}
+	/**
+	 * 
+	 * @return un boolean si la couleur captee est blanc
+	 */
+	public boolean estBlanc() {
+         color.setFloodlight(Color.WHITE);
+         if(color.getColorID() == 6) {
+             return true;
+         }
+         return false;
+	}
 
 
 

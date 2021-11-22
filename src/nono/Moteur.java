@@ -15,11 +15,11 @@ import lejos.robotics.navigation.MovePilot;
 
 public class Moteur {
 	//======== Attributs =======//
-	
+
 	private static final double diametreRoue= 5.5;
 	private static final int largeurChassis=13; //distance inter-roue 
 	private static final int vitesse=500;
-	
+
 	private MovePilot pilot;//diametre roue 5/5 largeur 3,distance entre roue 16.5,centre 8;
 	private Port lefthandMotorort = LocalEV3.get().getPort("A");
 	private Port righthandMotorort = LocalEV3.get().getPort("C");
@@ -31,8 +31,8 @@ public class Moteur {
 	private int VitessePince = 500;
 	private int DureeFermeturePince = 1000;
 	private boolean ouvert = false;
-	
-	
+
+
 	/**Constructeur de la classe moteur
 	 * 
 	 */
@@ -43,25 +43,25 @@ public class Moteur {
 		pilot=new MovePilot(diametreRoue,largeurChassis,leftMotor,rightMotor);
 		pilot.setAngularSpeed(vitesse);
 	}
-	
+
 	//autre methode constructeur
 	//pilot=new MovePilot(diametreRoue,chassis,leftMotor,rightMotor); //autre éthode, a explorer ?
 
-	 
+
 	/**Fonction permettant au robot d'avancer sur une distance donnée par l'utilisateur.
 	 * @param f est un float indiquant la distance du robot à parcourir en cm.
 	 */
 	public void travel (float f, boolean b) {
 		pilot.travel(f,b);		
 	}
-	 
+
 	/**Fonction modifiant la vitesse du robot en degrée par seconde.
 	 * @param i est un entier modifiant la vitesse de rotation des roues du robot en degre par seconde.
 	 */
 	public void setSpeed (int i) {
 		pilot.setAngularSpeed(i);
 	}
-	
+
 	/**Fonction permettant au robot d'avancer en arc,ou de tourner sur lui même.
 	 * @param radius est un double si positif le robot tourne vers la droite,si negatif vers la gauche et si neutre (= 0) tourne sur lui meme.
 	 * @param angle est un double,si il est positif,le robot tourne dans le sens d'une horloge,si negatif tourne dans le sens contraire d'une horloge,et si neutre (= 0),un retour de la fonction immediat.
@@ -69,29 +69,29 @@ public class Moteur {
 	public void travelArc(double radius,double angle, boolean b) {
 		pilot.arc(radius,angle,b);
 	}
-	
+
 	/**Fonction permettant au robot de tourner sur lui même d'un angle defini.
 	 * @param angle est un double,si positif tourne à gauche,si negatif a droite.
 	 */
 	public void tourneCentre(double angle,boolean b) {
 		pilot.rotate(angle,b);
 	}
-	
+
 	/**Fonction donnant la valeur de l'angle tourné actuellement.
 	 * @return un float qui correspond à l'angle tourné.
 	 */
 	public float getAngleRotated() {
 		return pilot.getMovement().getAngleTurned();
 	}
-	
+
 	/**Fonction d'arret du robot (stop le robot).
 	 */
 
 	public float getDistanceParcourue() {
 		return pilot.getMovement().getDistanceTraveled();
 	}
-	
-	
+
+
 	public void stop () {
 		pilot.stop();
 	}
@@ -106,27 +106,23 @@ public class Moteur {
 	/** Methode qui ferme la pince du robot si elle est ouverte, si non indique que la pince est fermé
 	 */
 	public void fermerPince() {
-		if(ouvert) {
-			handMotor.setSpeed(VitessePince);
-			handMotor.backward();
-			Delay.msDelay(DureeFermeturePince);
-			handMotor.stop();
-			ouvert=false;
-		}
-
-
-		/** Methode qui ouvre la pince du robot si elle est fermé, si non indique que la pince est ouverte
-		 */
+		handMotor.setSpeed(VitessePince);
+		handMotor.backward();
+		Delay.msDelay(DureeFermeturePince);
+		handMotor.stop();
+		ouvert=false;
 	}
 
+
+	/** Methode qui ouvre la pince du robot si elle est fermé, si non indique que la pince est ouverte
+	 */
+
 	public void ouvrirPince() {
-		if(!ouvert) {
-			handMotor.setSpeed(VitessePince);
-			handMotor.forward();
-			Delay.msDelay(DureeFermeturePince);
-			handMotor.stop();
-			ouvert=true;
-		}
+		handMotor.setSpeed(VitessePince);
+		handMotor.forward();
+		Delay.msDelay(DureeFermeturePince);
+		handMotor.stop();
+		ouvert=true;
 	}
 
 }
@@ -208,4 +204,4 @@ public int getSpeed() {
 return Speed;
 }
 }
-*/
+ */
