@@ -15,11 +15,11 @@ import lejos.robotics.navigation.MovePilot;
 
 public class Moteur {
 	//======== Attributs =======//
-	
+
 	private static final double diametreRoue= 5.5;
-	private static final int largeurChassis=13; //distance inter-roue 
+	private static final int largeurChassis=13; //distance inter-roue
 	private static final int vitesse=500;
-	
+
 	private MovePilot pilot;//diametre roue 5/5 largeur 3,distance entre roue 16.5,centre 8;
 	private Port lefthandMotorort = LocalEV3.get().getPort("A");
 	private Port righthandMotorort = LocalEV3.get().getPort("C");
@@ -31,10 +31,10 @@ public class Moteur {
 	private int VitessePince = 500;
 	private int DureeFermeturePince = 1000;
 	private boolean ouvert = false;
-	
-	
+
+
 	/**Constructeur de la classe moteur
-	 * 
+	 *
 	 */
 	public Moteur() {
 		handMotor = new EV3MediumRegulatedMotor(handhandMotorort);
@@ -43,58 +43,58 @@ public class Moteur {
 		pilot=new MovePilot(diametreRoue,largeurChassis,leftMotor,rightMotor);
 		pilot.setAngularSpeed(vitesse);
 	}
-	
+
 	public boolean isMoving() {
 		return this.pilot.isMoving();
 	}
 	//autre methode constructeur
-	//pilot=new MovePilot(diametreRoue,chassis,leftMotor,rightMotor); //autre éthode, a explorer ?
+	//pilot=new MovePilot(diametreRoue,chassis,leftMotor,rightMotor); //autre ï¿½thode, a explorer ?
 
-	 
-	/**Fonction permettant au robot d'avancer sur une distance donnée par l'utilisateur.
-	 * @param f est un float indiquant la distance du robot à parcourir en cm.
+
+	/**Fonction permettant au robot d'avancer sur une distance donnï¿½e par l'utilisateur.
+	 * @param f est un float indiquant la distance du robot ï¿½ parcourir en cm.
 	 */
 	public void travel (float f, boolean b) {
-		pilot.travel(f,b);		
+		pilot.travel(f,b);
 	}
-	 
-	/**Fonction modifiant la vitesse du robot en degrée par seconde.
+
+	/**Fonction modifiant la vitesse du robot en degrï¿½e par seconde.
 	 * @param i est un entier modifiant la vitesse de rotation des roues du robot en degre par seconde.
 	 */
 	public void setSpeed (int i) {
 		pilot.setAngularSpeed(i);
 	}
-	
-	/**Fonction permettant au robot d'avancer en arc,ou de tourner sur lui même.
+
+	/**Fonction permettant au robot d'avancer en arc,ou de tourner sur lui mï¿½me.
 	 * @param radius est un double si positif le robot tourne vers la droite,si negatif vers la gauche et si neutre (= 0) tourne sur lui meme.
 	 * @param angle est un double,si il est positif,le robot tourne dans le sens d'une horloge,si negatif tourne dans le sens contraire d'une horloge,et si neutre (= 0),un retour de la fonction immediat.
 	 */
 	public void travelArc(double radius,double angle, boolean b) {
 		pilot.arc(radius,angle,b);
 	}
-	
-	/**Fonction permettant au robot de tourner sur lui même d'un angle defini.
-	 * @param angle est un double,si positif tourne à gauche,si negatif a droite.
+
+	/**Fonction permettant au robot de tourner sur lui mï¿½me d'un angle defini.
+	 * @param angle est un double,si positif tourne ï¿½ gauche,si negatif a droite.
 	 */
 	public void tourneCentre(double angle,boolean b) {
 		pilot.rotate(angle,b);
 	}
-	
-	/**Fonction donnant la valeur de l'angle tourné actuellement.
-	 * @return un float qui correspond à l'angle tourné.
+
+	/**Fonction donnant la valeur de l'angle tournï¿½ actuellement.
+	 * @return un float qui correspond ï¿½ l'angle tournï¿½.
 	 */
 	public float getAngleRotated() {
 		return pilot.getMovement().getAngleTurned();
 	}
-	
+
 	/**Fonction d'arret du robot (stop le robot).
 	 */
 
 	public float getDistanceParcourue() {
 		return pilot.getMovement().getDistanceTraveled();
 	}
-	
-	
+
+
 	public void stop () {
 		pilot.stop();
 	}
@@ -106,51 +106,48 @@ public class Moteur {
 		return ouvert;
 	}
 
-	/** Methode qui ferme la pince du robot si elle est ouverte, si non indique que la pince est fermé
+	/** Methode qui ferme la pince du robot si elle est ouverte, si non indique que la pince est fermï¿½
 	 */
 	public void fermerPince() {
-		if(ouvert) {
-			handMotor.setSpeed(VitessePince);
-			handMotor.backward();
-			Delay.msDelay(DureeFermeturePince);
-			handMotor.stop();
-			ouvert=false;
-		}
+		handMotor.setSpeed(VitessePince);
+		handMotor.backward();
+		Delay.msDelay(DureeFermeturePince);
+		handMotor.stop();
+		ouvert=false;
+	}
 
 
-		/** Methode qui ouvre la pince du robot si elle est fermé, si non indique que la pince est ouverte
+		/** Methode qui ouvre la pince du robot si elle est fermï¿½, si non indique que la pince est ouverte
 		 */
 	}
 	public void forcefermerPince() {
-		
+
 			handMotor.setSpeed(VitessePince);
 			handMotor.backward();
 			Delay.msDelay(DureeFermeturePince);
 			handMotor.stop();
 			ouvert=false;
-		
 
 
-		/** Methode qui ouvre la pince du robot si elle est fermé, si non indique que la pince est ouverte
+
+		/** Methode qui ouvre la pince du robot si elle est fermï¿½, si non indique que la pince est ouverte
 		 */
 	}
 	public void ouvrirPince() {
-		if(!ouvert) {
-			handMotor.setSpeed(VitessePince);
-			handMotor.forward();
-			Delay.msDelay(DureeFermeturePince);
-			handMotor.stop();
-			ouvert=true;
-		}
+		handMotor.setSpeed(VitessePince);
+		handMotor.forward();
+		Delay.msDelay(DureeFermeturePince);
+		handMotor.stop();
+		ouvert=true;
 	}
 	public void forceouvrirPince() {
-		
+
 			handMotor.setSpeed(VitessePince);
 			handMotor.forward();
 			Delay.msDelay(DureeFermeturePince);
 			handMotor.stop();
 			ouvert=true;
-		
+
 	}
 
 	public MovePilot getPilot() {
@@ -160,20 +157,20 @@ public class Moteur {
 	public void setPilot(MovePilot pilot) {
 		this.pilot = pilot;
 	}
-	
-	
-	
-	
+
+
+
+
 }
 
-// Code conservé pour tests éventuels
+// Code conservï¿½ pour tests ï¿½ventuels
 
 
 /*public void setVitesse(int s) {
 MAXSPEED = s;
 }
 
-public void smooth(int O) {// -1 ou 1  
+public void smooth(int O) {// -1 ou 1
 
 	Speed+=10*O;
 	if (Speed>MAXSPEED) {
@@ -202,7 +199,7 @@ public void reculer() {
 
 smooth(1);
 if(status != -1) {
-	status = -1;			
+	status = -1;
 	leftMotor.backward();
 	rightMotor.backward();
 }
@@ -214,7 +211,7 @@ public void arreter() {
 while (Speed > 10) {
 //	a++;
 	//brick.drawString("speed : " + Speed + " a " +a , 0, 0, GraphicsLCD.VCENTER | GraphicsLCD.LEFT);
-	smooth(-1);	
+	smooth(-1);
 	Delay.msDelay(10);
 	//brick.clear();
 }
@@ -243,4 +240,4 @@ public int getSpeed() {
 return Speed;
 }
 }
-*/
+ */
