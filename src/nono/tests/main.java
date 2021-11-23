@@ -51,10 +51,6 @@ public class main {
 		//SampleProvider couleurprovided = new MeanFilter(distance, 5);
 		//Color[] sample = new float[average.sampleSize()];
 
-		//int i = 0;
-		//while(i<20){
-		//	average.fetchSample(sample, 0);
-		//	String s = Float.toString(sample[0]);
 		//	brick.drawString(s,0,0,GraphicsLCD.VCENTER | GraphicsLCD.LEFT);
 		//	i++;
 		//	Delay.msDelay(1000);

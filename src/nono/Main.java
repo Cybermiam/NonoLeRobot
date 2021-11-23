@@ -34,21 +34,26 @@ public class Main {
 			}
 		}).start();*/
 
-
-		/*boolean atrouve = false;
+/*
+	//	boolean atrouve = false;
 		float temp = 0;
 
-		while(r.getMoteur().getAngleRotated()<360 && atrouve==false) {
+		while(true) {
 			temp =  r.getCapteur().distanceMetre();
-			brick.drawString("distance"+temp, 0, 0, GraphicsLCD.VCENTER | GraphicsLCD.LEFT);
-			Delay.msDelay(10);
-			if(temp<1) {
-				r.getMoteur().stop();
-				atrouve=true;
+			if(temp==Float.POSITIVE_INFINITY) {
+				brick.drawString("distance inf : "+temp, 0, 0, GraphicsLCD.VCENTER | GraphicsLCD.LEFT);
+			} else {
+			brick.drawString("distance : "+temp, 0, 0, GraphicsLCD.VCENTER | GraphicsLCD.LEFT);
 			}
+			Delay.msDelay(50);
+			//if(temp<1) {
+			//	r.getMoteur().stop();
+			//	atrouve=true;
+			//}
 			brick.clear();
-		}
-
+		
+		}*/
+  /*
 		r.getMoteur().setSpeed(100);
 		r.getMoteur().travel(temp*100-5,false);
 
@@ -76,28 +81,29 @@ public class Main {
 	//	r.premierPalets();
 
 
+	//	r.getMoteur().forcefermerPince();
+		//r.getMoteur().forcefermerPince();
+		r.getMoteur().getPilot().setLinearAcceleration(50);
+		r.getMoteur().getPilot().setAngularAcceleration(50);
+		r.premierPalet();
 
+		
+		//r.getMoteur().forceouvrirPince();
+		//r.getMoteur().forceouvrirPince();
+		
 
-		r.setFecth(true);
+/*
 
-
-		new Thread(new Runnable() {
-			public void run() {
-				while(r.isFecth()) {
-					r.FecthDistance();
-				}
-			}
-		}).start();
-
+		
 		r.search();
+		
 
-
-		r.avancer((int)r.getVisuel().distance);
+		r.avancer((int)r.getVisuel().distance,false);
 		r.setEtat(r.getEtats().Arret);
 
 		r.recuperePalet();
-		r.setFecth(false);
-
+	
+*/
 		
 
 		/*

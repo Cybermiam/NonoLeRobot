@@ -55,9 +55,14 @@ public class Capteur {
 	public float distanceMetre() {
 		sample = new float[average.sampleSize()];
 		average.fetchSample(sample, 0);
-		return sample[sample.length-1];
-	}
+		//return sample[sample.length-1];
+		return sample[0];
 
+	}
+	public float ultrasound() {
+		float[] sample = new float[average.sampleSize()];
+		return sample[0];
+	}
 
 
 }

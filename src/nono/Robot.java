@@ -4,8 +4,11 @@ import lejos.hardware.BrickFinder;
 import lejos.hardware.lcd.GraphicsLCD;
 import lejos.hardware.port.Port;
 import lejos.utility.Delay;
+
+import java.awt.List;
 import java.lang.Enum;
 import java.sql.Struct;
+import java.util.ArrayList;
 
 
 //Enum Etat{Recherche,Attrape,Depose,Arret}
@@ -22,8 +25,22 @@ public class Robot {
 	
 	class Visuelc { 
 		public boolean atrouve = false;
-		public double distance=10000;}
+		public int angle = 0;
+		public double distance=0;
+		
+		public Visuelc() {}
+		
+		public Visuelc(boolean trouve, int angle, double distance) {
+			this.atrouve = trouve;
+			this.angle = angle;
+			this.distance = distance;
+		}
 	
+	}
+	
+	
+	//private ArrayList<Integer> liste = new ArrayList<Integer>();
+
 	class Etatc { 
 			  public static final int Arret = 0;
 			  public static final int Recherche = 1;
@@ -32,10 +49,13 @@ public class Robot {
 			  public static final int DeplacementDivers = 4;
 			}
 	
+	private Visuelc[] mesVisuels;
+	
 
 	private Visuelc visuel;
 	private Etatc etats;
 	private int etat;
+	private Visuelc[] paletsSuivants;
 
 	
 	private boolean fecth = false;
@@ -63,9 +83,11 @@ public class Robot {
 		this.moteurs=moteurs;
 		this.capteurs=capteurs;
 		distancePalet=0.3;
-		distanceMax=2.9;
+		distanceMax=1.95;
 		etats = new Etatc();
 		etat=etats.Arret;
+		mesVisuels = new Visuelc[100];
+		paletsSuivants = new Visuelc[3];
 	}
 
 
@@ -81,9 +103,9 @@ public class Robot {
 	 * @param distance int definissant le nombre de cm à parcourir
 	 * Fonction reculant le robot de distance cm
 	 */
-	public void avancer(int distance) {
-		moteurs.travel(distance,false);
-		this.etat = etats.Arret;
+	public void avancer(int distance, boolean b) {
+		moteurs.travel(distance,b);
+		
 	}
 
 	/**
@@ -102,33 +124,152 @@ public class Robot {
 	/* Prendre le premier palet sur un cote ,ensuite se decale pour sur le cote afin de ne pas deranger les autres palets
 	 * Distance 57cm
 	 */
-	public void premierPalets() {
-		moteurs.travel(50,true);
+	public void premierPalet() {
+		System.out.println(this.moteurs.getPilot().getLinearAcceleration());
+		avancer(50,false);
 		boolean b=recuperePalet();
 		if(b) {
 		}else {
 			moteurs.fermerPince();
 		}
-		moteurs.tourneCentre(45,false);
-		moteurs.travel(30, true);
-		moteurs.tourneCentre(-45,false);
-		avancer(165);
+		moteurs.setSpeed(50);
+		moteurs.tourneCentre(-15,false);
+		moteurs.setSpeed(150);
+
+		avancer(207, false);
+		//metre en asynchrone et vérifier si robot en face dans une boucle, exception si robot traitant le cas, sinon sortie si blanc détecté
+		
 		deposerPalet();
+		moteurs.tourneCentre(-150,false);
+		reculer(20);
+
+
+		
+	}
+	
+	public void paletsSuivants(){
+		
+		int nbPalets = 0;
+		int nbPaletsMarques = 0;
+		
+		if (capteurs.distanceMetre() < 0.8) {
+			 Visuelc vc1 = new Visuelc(true, 0, (double) capteurs.distanceMetre());
+			 paletsSuivants[0] = vc1;
+		}
+		
+		moteurs.tourneCentre(-40, false);
+		if (capteurs.distanceMetre() < 0.8) {
+			 Visuelc vc2 = new Visuelc(true, -40, (double) capteurs.distanceMetre());
+			 paletsSuivants[1] = vc2;
+		}
+		
+		moteurs.tourneCentre(80, false);
+		if (capteurs.distanceMetre() < 0.8) {
+			 Visuelc vc3 = new Visuelc(true, 80, (double) capteurs.distanceMetre());
+			 paletsSuivants[2] = vc3;
+		}
+		moteurs.tourneCentre(-40, false);
+		
+		for (int i = 0; i < 3; i++) {
+			if (paletsSuivants[i].atrouve) {
+				nbPalets++;
+			}
+		}
+		
+		int securite = 0;
+		while (nbPaletsMarques < nbPalets && securite < 3) {
+			if (paletsSuivants[0].atrouve) {
+				avancer(50, false);
+				recuperePalet();
+				moteurs.tourneCentre(180, false);
+				avancer(80, false);
+				deposerPalet();
+				moteurs.tourneCentre(180, false);
+				nbPaletsMarques++;
+				paletsSuivants[0].atrouve = false;
+			} else if (paletsSuivants[1].atrouve) {
+				moteurs.tourneCentre(-40, false);
+				avancer(78, false);
+				recuperePalet();
+				moteurs.tourneCentre(180, false);
+				avancer(108, false);
+				deposerPalet();
+				moteurs.tourneCentre(220, false);
+				nbPaletsMarques++;
+				paletsSuivants[1].atrouve = false;
+			} else if (paletsSuivants[2].atrouve) {
+				moteurs.tourneCentre(40, false);
+				avancer(78, false);
+				recuperePalet();
+				moteurs.tourneCentre(180, false);
+				avancer(108, false);
+				deposerPalet();
+				moteurs.tourneCentre(140, false);
+				nbPaletsMarques++;
+				paletsSuivants[2].atrouve = false;
+			}
+			securite++;
+		}
+		
+		
+		
+		
 	}
 
 	public void search() {
 		GraphicsLCD brick = BrickFinder.getDefault().getGraphicsLCD();
-		double temp1 = distancePalet , temp2 = distancePalet;
-		moteurs.setSpeed(10);
+		double temp1 = capteurs.distanceMetre() , temp2 = temp1;
+		moteurs.setSpeed(25);
 		moteurs.tourneCentre(360,true);
-		while(moteurs.getAngleRotated()<=360  && ( Math.abs(temp1-temp2) < 0.1)){
+		while(moteurs.isMoving() && Math.abs(temp1-temp2) < 0.2){
 			temp2=temp1;
-			temp1 =  lastMesure;
-			if(temp1>=distanceMax) {
-				temp1=distanceMax;
-			}
+			temp1 =  capteurs.distanceMetre();
+			//if(temp1==Float.POSITIVE_INFINITY) {
+			//	temp1=distanceMax;
+			//}
 			brick.drawString(temp1+" vs "+temp2, 0, 0, GraphicsLCD.VCENTER | GraphicsLCD.LEFT);
-			Delay.msDelay(2);			
+			Delay.msDelay(5);			
+			brick.clear();
+		}
+		moteurs.stop();
+		
+		moteurs.tourneCentre(15,false);
+	
+
+		/*anglesup = (int) moteurs.getAngleRotated();
+		while(moteurs.getAngleRotated()-anglesup>-20) {
+			brick.drawString("on y est presque", 0, 0, GraphicsLCD.VCENTER | GraphicsLCD.LEFT);
+			Delay.msDelay(1);
+		}*/
+
+		moteurs.setSpeed(100);
+		visuel.atrouve=true;
+		visuel.distance=temp1*100;
+
+	}
+
+	public void search2() {
+		GraphicsLCD brick = BrickFinder.getDefault().getGraphicsLCD();
+		
+		double temp1 = distanceMax , temp2 = distanceMax;
+		
+		moteurs.setSpeed(25);
+		
+		moteurs.tourneCentre(360,true);
+		
+		while(moteurs.getAngleRotated()<=360){
+			
+			temp2=temp1;
+			temp1 =  capteurs.distanceMetre();
+			//if(temp1==Float.POSITIVE_INFINITY) {
+			//	temp1=distanceMax;
+			//}
+			if( Math.abs(temp1-temp2) < 0.1) {
+				
+			}
+			
+			brick.drawString(temp1+" vs "+temp2, 0, 0, GraphicsLCD.VCENTER | GraphicsLCD.LEFT);
+			Delay.msDelay(5);			
 			brick.clear();
 		}
 		moteurs.stop();
@@ -137,10 +278,10 @@ public class Robot {
 		visuel.distance=temp1*100;
 
 	}
-
+	
 	public boolean recuperePalet() {
 		moteurs.ouvrirPince();
-		moteurs.travel(20, false);
+		moteurs.travel(10, false);
 		if(capteurs.estTouche()) {
 			moteurs.fermerPince();
 			return true;
@@ -151,6 +292,8 @@ public class Robot {
 	public void deposerPalet() {
 		moteurs.ouvrirPince();
 		reculer(20);
+		moteurs.fermerPince();
+
 	}
 
 	public void avanceVersPalet() {

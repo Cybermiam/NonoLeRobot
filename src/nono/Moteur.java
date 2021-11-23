@@ -44,6 +44,9 @@ public class Moteur {
 		pilot.setAngularSpeed(vitesse);
 	}
 	
+	public boolean isMoving() {
+		return this.pilot.isMoving();
+	}
 	//autre methode constructeur
 	//pilot=new MovePilot(diametreRoue,chassis,leftMotor,rightMotor); //autre éthode, a explorer ?
 
@@ -118,7 +121,19 @@ public class Moteur {
 		/** Methode qui ouvre la pince du robot si elle est fermé, si non indique que la pince est ouverte
 		 */
 	}
+	public void forcefermerPince() {
+		
+			handMotor.setSpeed(VitessePince);
+			handMotor.backward();
+			Delay.msDelay(DureeFermeturePince);
+			handMotor.stop();
+			ouvert=false;
+		
 
+
+		/** Methode qui ouvre la pince du robot si elle est fermé, si non indique que la pince est ouverte
+		 */
+	}
 	public void ouvrirPince() {
 		if(!ouvert) {
 			handMotor.setSpeed(VitessePince);
@@ -128,7 +143,27 @@ public class Moteur {
 			ouvert=true;
 		}
 	}
+	public void forceouvrirPince() {
+		
+			handMotor.setSpeed(VitessePince);
+			handMotor.forward();
+			Delay.msDelay(DureeFermeturePince);
+			handMotor.stop();
+			ouvert=true;
+		
+	}
 
+	public MovePilot getPilot() {
+		return pilot;
+	}
+
+	public void setPilot(MovePilot pilot) {
+		this.pilot = pilot;
+	}
+	
+	
+	
+	
 }
 
 // Code conservé pour tests éventuels
