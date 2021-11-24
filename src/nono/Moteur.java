@@ -119,7 +119,7 @@ public class Moteur {
 
 		/** Methode qui ouvre la pince du robot si elle est ferm�, si non indique que la pince est ouverte
 		 */
-	}
+	
 	public void forcefermerPince() {
 
 			handMotor.setSpeed(VitessePince);

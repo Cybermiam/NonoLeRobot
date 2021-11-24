@@ -81,15 +81,17 @@ public class Main {
 		//r.search();
 		//	r.premierPalets();
 
-	//	r.getMoteur().forcefermerPince();
-		//r.getMoteur().forcefermerPince();
+		//	r.getMoteur().forcefermerPince();
+		//	r.getMoteur().forcefermerPince();
+		//	r.getMoteur().forceouvrirPince();
+		//	r.getMoteur().forceouvrirPince();
+		
 		r.getMoteur().getPilot().setLinearAcceleration(50);
 		r.getMoteur().getPilot().setAngularAcceleration(50);
-		r.premierPalet();
+		r.getMoteur().tourneCentre(-55, false);
+		//r.premierPalet();
+		r.paletsSuivants2();
 
-
-		//r.getMoteur().forceouvrirPince();
-		//r.getMoteur().forceouvrirPince();
 
 
 		/*	r.getMoteur().fermerPince();
