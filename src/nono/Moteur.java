@@ -117,16 +117,15 @@ public class Moteur {
 	}
 
 
-		/** Methode qui ouvre la pince du robot si elle est ferm�, si non indique que la pince est ouverte
-		 */
-	}
+	/** Methode qui ouvre la pince du robot si elle est ferm�, si non indique que la pince est ouverte
+	 */
 	public void forcefermerPince() {
 
-			handMotor.setSpeed(VitessePince);
-			handMotor.backward();
-			Delay.msDelay(DureeFermeturePince);
-			handMotor.stop();
-			ouvert=false;
+		handMotor.setSpeed(VitessePince);
+		handMotor.backward();
+		Delay.msDelay(DureeFermeturePince);
+		handMotor.stop();
+		ouvert=false;
 
 
 
@@ -142,11 +141,11 @@ public class Moteur {
 	}
 	public void forceouvrirPince() {
 
-			handMotor.setSpeed(VitessePince);
-			handMotor.forward();
-			Delay.msDelay(DureeFermeturePince);
-			handMotor.stop();
-			ouvert=true;
+		handMotor.setSpeed(VitessePince);
+		handMotor.forward();
+		Delay.msDelay(DureeFermeturePince);
+		handMotor.stop();
+		ouvert=true;
 
 	}
 

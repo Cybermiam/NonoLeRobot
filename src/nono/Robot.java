@@ -44,12 +44,12 @@ public class Robot {
 	//private ArrayList<Integer> liste = new ArrayList<Integer>();
 
 	class Etatc {
-			  public static final int Arret = 0;
-			  public static final int Recherche = 1;
-			  public static final int Attrape = 2;
-			  public static final int Depose = 3;
-			  public static final int DeplacementDivers = 4;
-			}
+		public static final int Arret = 0;
+		public static final int Recherche = 1;
+		public static final int Attrape = 2;
+		public static final int Depose = 3;
+		public static final int DeplacementDivers = 4;
+	}
 
 	private Visuelc[] mesVisuels;
 
@@ -131,15 +131,13 @@ public class Robot {
 	 */
 	public void premierPalet() {
 		System.out.println(this.moteurs.getPilot().getLinearAcceleration());
-		avancer(50,false);
+		avancer(37,false);
 		boolean b=recuperePalet();
-		if(b) {
-		}else {
-			moteurs.fermerPince();
-		}
+
+
 		moteurs.setSpeed(50);
 		moteurs.tourneCentre(-15,false);
-		moteurs.setSpeed(150);
+		moteurs.setSpeed(140);
 
 		avancer(207, false);
 		//metre en asynchrone et v�rifier si robot en face dans une boucle, exception si robot traitant le cas, sinon sortie si blanc d�tect�
@@ -147,10 +145,8 @@ public class Robot {
 		deposerPalet();
 		moteurs.tourneCentre(-150,false);
 		reculer(20);
-
-
-
 	}
+
 
 	public void paletsSuivants(){
 
@@ -158,20 +154,20 @@ public class Robot {
 		int nbPaletsMarques = 0;
 
 		if (capteurs.distanceMetre() < 0.8) {
-			 Visuelc vc1 = new Visuelc(true, 0, (double) capteurs.distanceMetre());
-			 paletsSuivants[0] = vc1;
+			Visuelc vc1 = new Visuelc(true, 0, (double) capteurs.distanceMetre());
+			paletsSuivants[0] = vc1;
 		}
 
 		moteurs.tourneCentre(-40, false);
 		if (capteurs.distanceMetre() < 0.8) {
-			 Visuelc vc2 = new Visuelc(true, -40, (double) capteurs.distanceMetre());
-			 paletsSuivants[1] = vc2;
+			Visuelc vc2 = new Visuelc(true, -40, (double) capteurs.distanceMetre());
+			paletsSuivants[1] = vc2;
 		}
 
 		moteurs.tourneCentre(80, false);
 		if (capteurs.distanceMetre() < 0.8) {
-			 Visuelc vc3 = new Visuelc(true, 80, (double) capteurs.distanceMetre());
-			 paletsSuivants[2] = vc3;
+			Visuelc vc3 = new Visuelc(true, 80, (double) capteurs.distanceMetre());
+			paletsSuivants[2] = vc3;
 		}
 		moteurs.tourneCentre(-40, false);
 
@@ -310,11 +306,8 @@ public class Robot {
 		}
 	}
 	public void pause() {
-		Button.waitForAnyPress(1000);
-		if(Button.ENTER.isDown()) {
-			System.exit(0);
+		Button.waitForAnyPress();
 		}
-	}
 	/*public void avanceVersPalet() {
 		if(this.search()) {
 		}
