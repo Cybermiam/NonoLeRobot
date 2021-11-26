@@ -16,17 +16,18 @@ public class Main {
 		final Robot r=new Robot();
 		final Pause p=new Pause();
 		GraphicsLCD brick = BrickFinder.getDefault().getGraphicsLCD();
-		System.out.println("Entrer pour phase 1 \n Bas pour phase 2");
+		System.out.println("Appuie sur Entrer pour phase 1 \n Bas pour phase 2");
 		Button.waitForAnyPress();
 		if(Button.ENTER.isDown()) {
 			System.out.println("phase 1");
 			p.start();
-			r.premierPalet();
+			r.paletsSuivants2();
 			//la suite du programme
 		}else if(Button.DOWN.isDown()) {
 			System.out.println("phase 2");
 			p.start();
 			//la suite du programme 
 		}
+		
 	}
 }
