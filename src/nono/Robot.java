@@ -404,6 +404,18 @@ public class Robot {
 			moteurs.travel(capteurs.distanceMetre()*100-20,false);
 		}
 	}
+	public void RobotoEnnemy() {
+		if(capteurs.distanceMetre()*100<15) {
+			float dist=capteurs.distanceMetre()*100;
+			System.out.println("is that a ROBOT or a WALL");
+			if(dist<capteurs.distanceMetre()*100) {
+				System.out.println("That was a Robot");
+			}else {
+				System.out.println("It's a wall \n Go back");
+				moteurs.stop();
+			}
+		}
+	}
 	/*public void avanceVersPalet() {
 		if(this.search()) {
 		}
