@@ -28,8 +28,8 @@ public class Moteur {
 	private EV3LargeRegulatedMotor rightMotor;
 	private EV3MediumRegulatedMotor handMotor;
 	private int status = 0; // -1 recule ; 0 a l'arret ; 1  avance
-	private int VitessePince = 500;
-	private int DureeFermeturePince = 1000;
+	private int VitessePince = 2000;
+	private int DureeFermeturePince =1500;
 	private boolean ouvert = false;
 
 
@@ -119,18 +119,18 @@ public class Moteur {
 
 		/** Methode qui ouvre la pince du robot si elle est ferm�, si non indique que la pince est ouverte
 		 */
-	
+
 	public void forcefermerPince() {
 
-			handMotor.setSpeed(VitessePince);
-			handMotor.backward();
-			Delay.msDelay(DureeFermeturePince);
-			handMotor.stop();
-			ouvert=false;
+		handMotor.setSpeed(VitessePince);
+		handMotor.backward();
+		Delay.msDelay(DureeFermeturePince);
+		handMotor.stop();
+		ouvert=false;
 
 
 
-		/** Methode qui ouvre la pince du robot si elle est ferm�, si non indique que la pince est ouverte
+		/** Methode qui ouvre la pince du robot si elle est ferm�, sinon indique que la pince est ouverte
 		 */
 	}
 	public void ouvrirPince() {
@@ -142,11 +142,11 @@ public class Moteur {
 	}
 	public void forceouvrirPince() {
 
-			handMotor.setSpeed(VitessePince);
-			handMotor.forward();
-			Delay.msDelay(DureeFermeturePince);
-			handMotor.stop();
-			ouvert=true;
+		handMotor.setSpeed(VitessePince);
+		handMotor.forward();
+		Delay.msDelay(DureeFermeturePince);
+		handMotor.stop();
+		ouvert=true;
 
 	}
 

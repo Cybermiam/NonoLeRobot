@@ -14,57 +14,19 @@ public class Main {
 
 	public static void main(String[] args) {
 		final Robot r=new Robot();
-		//r.setVitesse(500);
-		//r.avancerAvecToucher();
-		//final Moteur r.getMoteur()=new Moteur();
-		//Capteur r.getCapteur() = new Capteur();
-		//r.getMoteur().travelArc(100, 90);
-		//r.getMoteur().travel(50);
-
-
-
+		final Pause p=new Pause();
 		GraphicsLCD brick = BrickFinder.getDefault().getGraphicsLCD();
-
-
-		//r.getMoteur().setSpeed(30);
-		//r.getMoteur().tourneCentre(360);
-
-		/*new Thread(new Runnable() {
-		public void run() {
-				r.getMoteur().fermerPince();
-			}
-		}).start();*/
-
-/*
-	//	boolean atrouve = false;
-		float temp = 0;
-
-		while(true) {
-			temp =  r.getCapteur().distanceMetre();
-			if(temp==Float.POSITIVE_INFINITY) {
-				brick.drawString("distance inf : "+temp, 0, 0, GraphicsLCD.VCENTER | GraphicsLCD.LEFT);
-			} else {
-			brick.drawString("distance : "+temp, 0, 0, GraphicsLCD.VCENTER | GraphicsLCD.LEFT);
-			}
-			Delay.msDelay(50);
-			//if(temp<1) {
-			//	r.getMoteur().stop();
-			//	atrouve=true;
-			//}
-			brick.clear();
-
-		}*/
-  /*
-		r.getMoteur().setSpeed(100);
-		r.getMoteur().travel(temp*100-5,false);
-
-		r.getMoteur().ouvrirPince();
-		r.getMoteur().travel(10,true);
-
-		brick.drawString("on vas a"+temp*100, 0, 0, GraphicsLCD.VCENTER | GraphicsLCD.LEFT);
-
-		while(r.getCapteur().estTouche()==false && r.getMoteur().getDistanceParcourue()<=10) {
-			Delay.msDelay(1);
+		System.out.println("Appuie sur Entrer pour phase 1 \n Bas pour phase 2");
+		Button.waitForAnyPress();
+		if(Button.ENTER.isDown()) {
+			System.out.println("phase 1");
+			p.start();
+			r.paletsSuivants2();
+			//la suite du programme
+		}else if(Button.DOWN.isDown()) {
+			System.out.println("phase 2");
+			p.start();
+			//la suite du programme
 		}
 		r.getMoteur().stop();
 		r.getMoteur().fermerPince();
@@ -85,7 +47,7 @@ public class Main {
 		//	r.getMoteur().forcefermerPince();
 		//	r.getMoteur().forceouvrirPince();
 		//	r.getMoteur().forceouvrirPince();
-		
+
 		r.getMoteur().getPilot().setLinearAcceleration(50);
 		r.getMoteur().getPilot().setAngularAcceleration(50);
 		r.getMoteur().tourneCentre(-55, false);

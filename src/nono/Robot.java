@@ -21,7 +21,6 @@ public class Robot {
 
 	private double distancePalet;
 	private double distanceMax;
-	private boolean pause;
 	public int angle;
 
 
@@ -57,7 +56,7 @@ public class Robot {
 	private Visuelc visuel;
 	private Etatc etats;
 	private int etat;
-	
+
 	private Visuelc[] mesVisuels;
 	private Visuelc[] paletsSuivants;
 
@@ -91,9 +90,8 @@ public class Robot {
 		etats = new Etatc();
 		etat=etats.Arret;
 		mesVisuels = new Visuelc[100];
-		paletsSuivants = new Visuelc[3];
+		paletsSuivants = new Visuelc[10];
 
-		pause=false;
 		angle=0;
 	}
 
@@ -133,12 +131,12 @@ public class Robot {
 	 */
 	public void premierPalet() {
 		System.out.println(this.moteurs.getPilot().getLinearAcceleration());
-		avancer(50,false);
+		avancer(37,false);
 		boolean b=recuperePalet();
 
 		moteurs.setSpeed(50);
 		moteurs.tourneCentre(-15,false);
-		moteurs.setSpeed(150);
+		moteurs.setSpeed(140);
 
 		avancer(207, false);
 		//metre en asynchrone et verifier si robot en face dans une boucle, exception si robot traitant le cas, sinon sortie si blanc d�tect�
@@ -146,104 +144,107 @@ public class Robot {
 		deposerPalet();
 		moteurs.tourneCentre(-150,false);
 		reculer(20);
-
-
-
 	}
 
 	public void paletsSuivants2() {
 
-		moteurs.tourneCentre(-55, false);
-		moteurs.tourneCentre(110, true);
+		moteurs.setSpeed(50);
+        moteurs.tourneCentre(-55, false);
+        moteurs.tourneCentre(110, true);
 
-		int count = 0;
-		int i = 0;
-		int lastmes = 2000;
-		int obj = 0;
-
-		while(moteurs.getAngleRotated()<109) {
-
-			count=(int) moteurs.getAngleRotated();
-			//System.out.println(moteurs.getAngleRotated());
-
-			if(count%5==0) {	
-				System.out.println( count +" - "+capteurs.distanceMetre());
-				if(capteurs.distanceMetre()<0.9) {
-
-					
-					mesVisuels[i] = new Visuelc(true, count,capteurs.distanceMetre());
-					System.out.print( "VALID");
-				/*	if(Math.abs(count-lastmes) <= 20) {
-						mesVisuels[i].numObj=obj;
-					}else {
-						obj++;
-						mesVisuels[i].numObj=obj;
-					}
-					lastmes=count;*/
-					i++;
-				}
-			}
-			
-			Delay.msDelay(2);
-			
-			
-
-		}
-		mesVisuels[i] = new Visuelc(false, count,capteurs.distanceMetre());
-
-		System.out.println("  ttttttttttttttt   ");
-		System.out.println("  ttttttttttttttt   ");
-		System.out.println("  ttttttttttttttt   ");
+        int count = 0;
+        int i = 0;
 
 
-		i=0; int j=0;
-		double borne1 = 0.0,borne2 = 0.0;
-		int moy=0; int nbm=0;
-		int angledep=0;
-		
-		
-		while(mesVisuels[i].atrouve) {
-			System.out.println("passsage : "+borne1+" ? "+mesVisuels[i].distance+" / "+borne2+" ? "+mesVisuels[i].distance);
-			
-			if(borne1==0.0 && borne2==0.0 ) {
-				angledep = mesVisuels[i].angle;
-				borne1 = mesVisuels[i].distance-0.15; borne2 = mesVisuels[i].distance+0.15;
-				System.out.println(mesVisuels[i].angle + " - " + (borne1+borne2)/2 + " - START ");
-				moy+=mesVisuels[i].angle;
-				nbm++;
-			}else if (mesVisuels[i].distance>=borne1 && mesVisuels[i].distance<=borne2 && mesVisuels[i].angle-30 <= angledep) {
-				System.out.println(mesVisuels[i].angle + " - " + (borne1+borne2)/2 + " - Middle ");
-				moy+=mesVisuels[i].angle;
-				nbm++;
-			}else {				
-				moy = moy/nbm;
-				paletsSuivants[j]=new Visuelc(true,moy,(borne1+borne2)/2);
-				System.out.println(mesVisuels[i].angle + " - " + (borne1+borne2)/2 + " - FIN ");
-				borne1 = mesVisuels[i].distance-0.15; borne2 = mesVisuels[i].distance+0.15;
-				angledep = mesVisuels[i].angle;
-				moy=0;nbm=0;j++;
-			}
-			i++;
+        while(moteurs.getAngleRotated()<109) {
 
-		}
-		i--;
-		moy = moy/nbm;
-		paletsSuivants[j]=new Visuelc(true,moy,(borne1+borne2)/2);
-		System.out.println(mesVisuels[i].angle + " - " + (borne1+borne2)/2 + " - FIN ");
-		borne1 = mesVisuels[i].distance-0.15; borne2 = mesVisuels[i].distance+0.15;
-		angledep = mesVisuels[i].angle;
-		moy=0;nbm=0;j++;
-	
-		for(int a=0; a<paletsSuivants.length;a++) {
-			try {
-				
-				System.out.println(paletsSuivants[a].angle+" - "+paletsSuivants[a].distance +" - "+paletsSuivants[a].numObj);
-			} catch (Exception e) {
-				System.out.println("un de trop");
-			}
-		}
+            count=(int) moteurs.getAngleRotated();
+            //System.out.println(moteurs.getAngleRotated());
 
-	}
+            if(count%5==0) {
+                System.out.println( count +" - "+capteurs.distanceMetre());
+                if(capteurs.distanceMetre()<1.0) {
+
+
+                    mesVisuels[i] = new Visuelc(true, count,capteurs.distanceMetre());
+                    System.out.print( " VALID ");
+                /*    if(Math.abs(count-lastmes) <= 20) {
+                        mesVisuels[i].numObj=obj;
+                    }else {
+                        obj++;
+                        mesVisuels[i].numObj=obj;
+                    }
+                    lastmes=count;*/
+                    i++;
+                }
+            }
+
+            Delay.msDelay(2);
+
+
+
+        }
+        mesVisuels[i] = new Visuelc(false, count,capteurs.distanceMetre());
+
+        System.out.println("  ttttttttttttttt   ");
+        System.out.println("  ttttttttttttttt   ");
+        System.out.println("  ttttttttttttttt   ");
+
+
+        i=0; int j=0;
+        double borne1 = 0.0,borne2 = 0.0;
+        int moy=0; int nbm=0;
+        int angledep=0;
+        boolean secu =false;
+
+
+        while(mesVisuels[i].atrouve) {
+            System.out.println("passsage : "+borne1+" ? "+mesVisuels[i].distance+" / "+borne2+" ? "+mesVisuels[i].distance);
+
+            if(borne1==0.0 && borne2==0.0 ) {
+                angledep = mesVisuels[i].angle;
+                borne1 = mesVisuels[i].distance-0.15; borne2 = mesVisuels[i].distance+0.15;
+                System.out.println(mesVisuels[i].angle + " - " + (borne1+borne2)/2 + " - START1 ");
+                moy+=mesVisuels[i].angle;
+                nbm++;
+                secu=false;
+            }else if (mesVisuels[i].distance>=borne1 && mesVisuels[i].distance<=borne2 && mesVisuels[i].angle-40 <= angledep) {
+                System.out.println(mesVisuels[i].angle + " - " + (borne1+borne2)/2 + " - Middle ");
+                moy+=mesVisuels[i].angle;
+                nbm++;
+            }else {
+                moy = moy/nbm;
+                paletsSuivants[j]=new Visuelc(true,moy,(borne1+borne2)/2);
+                System.out.println(mesVisuels[i].angle + " - " + (borne1+borne2)/2 + " - FIN START2 ");
+                borne1 = mesVisuels[i].distance-0.15; borne2 = mesVisuels[i].distance+0.15;
+                angledep = mesVisuels[i].angle;
+                moy=mesVisuels[i].angle;nbm=1;j++;
+                secu = true;
+            }
+            i++;
+
+        }
+        if(mesVisuels[i].atrouve==false && secu == false) {
+        	i--;
+        	moy = moy/nbm;
+        	paletsSuivants[j]=new Visuelc(true,moy,(borne1+borne2)/2);
+        	System.out.println(mesVisuels[i].angle + " - " + (borne1+borne2)/2 + " - FIN FINALE");
+        }
+
+        for(int a=0; a<paletsSuivants.length;a++) {
+            try {
+
+                System.out.println(paletsSuivants[a].angle+" - "+paletsSuivants[a].distance);
+            } catch (Exception e) {
+                System.out.println("un de trop");
+            }
+        }
+
+        //metton que l'on ait 3 palets en x1 x2 x3
+        //POUR LE PREMIER JUSTE rotate -x3
+        //POUR LES MOUVEMENT rotate 180-(X3-X2) afin d'aller chercher les suivants
+
+    }
 
 
 
@@ -346,7 +347,7 @@ public class Robot {
 			Delay.msDelay(1);
 		}*/
 
-		moteurs.setSpeed(100);
+		moteurs.setSpeed(50);
 		visuel.atrouve=true;
 		visuel.distance=temp1*100;
 	}
@@ -406,12 +407,6 @@ public class Robot {
 		else {
 			moteurs.tourneCentre(-angle, false);
 			moteurs.travel(capteurs.distanceMetre()*100-20,false);
-		}
-	}
-	public void pause() {
-		Button.waitForAnyPress(1000);
-		if(Button.ENTER.isDown()) {
-			System.exit(0);
 		}
 	}
 	/*public void avanceVersPalet() {

@@ -70,8 +70,8 @@ public class Capteur {
          }
          return false;
 	}
- 
-	
+
+
 	public float ultrasound() {
 		float[] sample = new float[average.sampleSize()];
 		return sample[0];
