@@ -28,9 +28,10 @@ public class Moteur {
 	private EV3LargeRegulatedMotor rightMotor;
 	private EV3MediumRegulatedMotor handMotor;
 	private int status = 0; // -1 recule ; 0 a l'arret ; 1  avance
-	private int VitessePince = 2000;
-	private int DureeFermeturePince =1500;
+	private int VitessePince = 1500;
+	private int DureeFermeturePince =1000;
 	private boolean ouvert = false;
+
 
 
 	/**Constructeur de la classe moteur
@@ -119,20 +120,7 @@ public class Moteur {
 
 		/** Methode qui ouvre la pince du robot si elle est ferm�, si non indique que la pince est ouverte
 		 */
-
-	public void forcefermerPince() {
-
-		handMotor.setSpeed(VitessePince);
-		handMotor.backward();
-		Delay.msDelay(DureeFermeturePince);
-		handMotor.stop();
-		ouvert=false;
-
-
-
-		/** Methode qui ouvre la pince du robot si elle est ferm�, sinon indique que la pince est ouverte
-		 */
-	}
+	
 	public void ouvrirPince() {
 		handMotor.setSpeed(VitessePince);
 		handMotor.forward();
@@ -140,20 +128,19 @@ public class Moteur {
 		handMotor.stop();
 		ouvert=true;
 	}
-	public void forceouvrirPince() {
 
-		handMotor.setSpeed(VitessePince);
-		handMotor.forward();
-		Delay.msDelay(DureeFermeturePince);
-		handMotor.stop();
-		ouvert=true;
 
-	}
 
+	/**Fonction retournant l'objetx movepilot
+	 * @return l'attribut pilot
+	 */
 	public MovePilot getPilot() {
 		return pilot;
 	}
 
+	/**Fonction setPilot.
+	 * @param pilot est l'objet MovePilot a set
+	 */
 	public void setPilot(MovePilot pilot) {
 		this.pilot = pilot;
 	}
@@ -163,10 +150,11 @@ public class Moteur {
 
 }
 
-// Code conserv� pour tests �ventuels
+// Code conserve pour tests eventuels
 
 
-/*public void setVitesse(int s) {
+/*archive 
+public void setVitesse(int s) {
 MAXSPEED = s;
 }
 

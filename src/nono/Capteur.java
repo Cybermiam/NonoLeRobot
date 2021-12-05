@@ -28,29 +28,30 @@ public class Capteur {
 	 */
 	public Capteur(){
 		touch=new EV3TouchSensor(LocalEV3.get().getPort("S2"));
-		color=new EV3ColorSensor(LocalEV3.get().getPort("S3"));
+		//color=new EV3ColorSensor(LocalEV3.get().getPort("S3"));
 		ultrasound=new EV3UltrasonicSensor(LocalEV3.get().getPort("S4"));
 		distance = ultrasound.getMode("Distance");
 		average = new MeanFilter(distance,5);
 	}
+	
 	/**
 	 *
-	 * @return true si le robot est toucher,et false si le robot n est pas touche
+	 * @return true si le robot est touché,et false si le robot n'est pas touche
 	 */
 	public boolean estTouche() {
 		float[] sample = new float[1];
 		touch.fetchSample(sample, 0);
-		//	GraphicsLCD brick = BrickFinder.getDefault().getGraphicsLCD();
+		/*archive	GraphicsLCD brick = BrickFinder.getDefault().getGraphicsLCD();
 		//	brick.drawString(""+sample[0], 0, 0, GraphicsLCD.VCENTER | GraphicsLCD.LEFT);
 		//	Delay.msDelay(5);
-		//	brick.clear();
+		//	brick.clear(); */
 		return sample[0] != 0;
 
 	}
 
 	/**
 	 *
-	 * @return un float avec la distance captï¿½ par l'ultrason (en mï¿½tre)
+	 * @return un float avec la distance captee par le capteur a ultrasons (en metre)
 	 */
 	public float distanceMetre() {
 		sample = new float[average.sampleSize()];
@@ -70,8 +71,7 @@ public class Capteur {
          }
          return false;
 	}
-
-
+ 
 	public float ultrasound() {
 		float[] sample = new float[average.sampleSize()];
 		return sample[0];
